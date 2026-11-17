@@ -79,7 +79,19 @@ You&#39;re in the living room.
 Here you can check today&#39;s schedule, play some games, read a book, or examine the bookshelf. You can also move over to other rooms.
 
 &#39;&#39;Actions&#39;&#39;
-[[&gt; Check schedule: ($convertToTime: $freeTasks&#39;s &quot;Check Schedule&quot;)-&gt;Check Schedule]]
+{(if: $checkedScheduleToday is false) [
+(text-color:yellow)[
+    (link: &quot;&gt; Check Schedule: &quot; + ($convertToTime: $freeTasks&#39;s &quot;Check Schedule&quot;))[
+		(go-to: &quot;Check Schedule&quot;)
+    ]
+]
+]
+(else:) [
+    (link: &quot;&gt; Check Schedule: &quot; + ($convertToTime: $freeTasks&#39;s &quot;Check Schedule&quot;))[
+		(go-to: &quot;Check Schedule&quot;)
+    ]
+]}
+[[&gt; Play videogames: ($convertToTime: $freeTasks&#39;s &quot;Play Games&quot;)-&gt;Play Videogames]]
 
 &#39;&#39;Navigation&#39;&#39;
 [[&gt; Go to Kitchen-&gt;Kitchen]]
@@ -106,26 +118,53 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 (set: $targetPassage to &quot;Living Room&quot;)
 (set: $randomEventChance to 5) &lt;!-- every time the random event fetch is called, 5% chance that a random event is triggered --&gt;
 
+(set: $checkedScheduleToday to false)
+
 &lt;!--- Macros ---&gt;
 &lt;!--- Convert number to Time ---&gt;
-(set: $convertToTime to (macro: num-type  _time, [
-  (set: _day to (floor: _time / 100) + 1)
-  (set: _dayTime to _time - ((_day - 1) * 100))
+(set: $convertToTime to (macro: num-type _time, [
+    (set: _day to (floor: _time / 100) + 1)
+    (set: _dayTime to _time - ((_day - 1) * 100))
 
-  (set: _totalMinutes to (floor: _dayTime * 14.4))
-  (set: _hours to (floor: _totalMinutes / 60))
-  (set: _minutes to _totalMinutes - (_hours * 60))
+    (set: _totalMinutes to (floor: _dayTime * 14.4))
+    (set: _hours to (floor: _totalMinutes / 60))
+    (set: _minutes to _totalMinutes - (_hours * 60))
 
-  (output:)
-  [{
-      (if: _hours &gt; 0)[
-          (print: _hours) (if: _hours is 1)[hour](else:)[hours]
-      ]
-      (if: _minutes &gt; 0)[
-          (if: _hours &gt; 0)[ and ]
-          (print: _minutes) (if: _minutes is 1)[minute](else:)[minutes]
-      ]
-  }]
+    (set: _result to &quot;&quot;)
+
+    (if: _hours &gt; 0)[
+        (set: _result to (str: _hours) + &quot; &quot;)
+        (if: _hours is 1)[
+            (set: _result to _result + &quot;hour&quot;)
+        ]
+        (else:)[
+            (set: _result to _result + &quot;hours&quot;)
+        ]
+    ]
+
+    (if: _minutes &gt; 0)[
+        (if: _hours &gt; 0)[
+            (set: _result to _result + &quot; and &quot;)
+        ]
+        (set: _result to _result + (str: _minutes) + &quot; &quot;)
+
+        (if: _minutes is 1)[
+            (set: _result to _result + &quot;minute&quot;)
+        ]
+        (else:)[
+            (set: _result to _result + &quot;minutes&quot;)
+        ]
+    ]
+
+    (output-data: _result)
+]))
+
+&lt;!-- Check whether Fernando should be sleeping --&gt;
+(set: $checkForSleepHours to (macro: [
+	&lt;!-- Check if current time is between 0 and 34.3 (8 hours) BUT needs to be mod 100 --&gt;
+    (if: $time % 100 &gt; 0 and $time % 100 &lt; 34.3) [
+    	(go-to: &quot;Time To Sleep&quot;)
+    ]
 ]))
 
 &lt;!-- Check and trigger random event --&gt;
@@ -136,11 +175,23 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     
     &lt;!-- Check if there is a random event, if so, select random event and go to that passage --&gt;
     (if: (random: 1, 100) &lt;= $randomEventChance) [
-    	(go-to: $randomEvents&#39;s (random: 0, $randomEvents&#39;s length - 1))
+    	(go-to: $randomEvents&#39;s (random: 1, $randomEvents&#39;s length - 1))
     ]
     (else:) [
     	(go-to: $targetPassage)
     ]
+]))
+
+&lt;!-- Convert minutes to time--&gt;
+(set: $convertMinutesToTime to (macro: num_type _minutes, [
+	(output-data: _minutes * 100 / 1400)
+]))
+
+
+&lt;!-- Return amount of time spent on task --&gt;
+&lt;!-- Given a default amount of time, a task could take a bit less or a bit more time to perform --&gt;
+(set: $computeActualTime to (macro: num-type _defaultTime, [
+   (output-data: _defaultTime + ((random: -20, 20) / 100) * _defaultTime)
 ]))
 
 (go-to:&quot;Living Room&quot;)</tw-passagedata><tw-passagedata pid="8" name="Header" tags="header" position="700,550" size="100,100">{(if: $showHeader is true)[
@@ -157,7 +208,7 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     &lt;/div&gt;
 ]
 (live: 200ms)[
-    (set: $time to it + 1)
+    (set: $time to it + 0.001)
     (if: $showHeader is true)[
         (rerun: ?clock)
     ]
@@ -170,12 +221,17 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 0. Have Lunch with Dad @ 13:00
 0. Go on a walk with Dad @ 16:00
 
+{(set: $debugGlobalVariable to ($computeActualTime: $freeTasks&#39;s &quot;Check Schedule&quot;))}
+
 (link:&quot;&gt; Got it!&quot;) [
-	(set: $time to $time + $freeTasks&#39;s &quot;Check Schedule&quot;)
+    (set: _actualTime to  ($computeActualTime: $freeTasks&#39;s &quot;Check Schedule&quot;))
+	(set: $time to $time + _actualTime)
+    (set: $checkedScheduleToday to true)
     ($computeRandoms: &quot;Living Room&quot;)
     ]
 
-</tw-passagedata><tw-passagedata pid="10" name="Equipment Discount" tags="" position="900,550" size="100,100">You suddenly remember that there was a huge discount for safety equipment used by people with Alzheimer&#39;s, but this discount ends today. If you leave now, you could get the equipment and install it, improving both your and Afonzo&#39;s lives. But it costs serious money to get it...
+&lt;!-- Define schedule time expectations --&gt;
+(set: $schedule to (a: </tw-passagedata><tw-passagedata pid="10" name="Equipment Discount" tags="" position="900,550" size="100,100">You suddenly remember that there was a huge discount for safety equipment used by people with Alzheimer&#39;s, but this discount ends today. If you leave now, you could get the equipment and install it, improving both your and Afonzo&#39;s lives. But it costs serious money to get it...
 
 (link: &quot;&gt; Get the equipment: -200€&quot;) [
 	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
@@ -252,6 +308,8 @@ You&#39;re in the kitchen.
 
 Here you can cook meals, have a snack, or read some recipes.
 
+
+&#39;&#39;Navigation&#39;&#39;
 [[&gt; Go to the living room-&gt;Living Room]]
 [[&gt; Go to your bedroom-&gt;Fernando Bedroom]]
 [[&gt; Go to your father&#39;s bedroom-&gt;Father Bedroom]]
@@ -317,7 +375,63 @@ Order of events:
     	1.4. Very far away provides -- Afonzo, ---Fernando
 
 
---&gt;</tw-passagedata></tw-storydata>
+--&gt;</tw-passagedata><tw-passagedata pid="25" name="Play Videogames" tags="" position="1350,500" size="100,100">You play some videogames.
+
+For a while, the world stops, and you have a great time. You forget that you need to care for someone. You are... truly happy. And what would make you even happier? Continue playing.
+
+{(set: _numberOfContinues to 0)
+(set: _textToContinue to (a:
+    &quot;&gt; Just a bit more&quot;,
+    &quot;&gt; I&#39;m having so much fun!&quot;,
+    &quot;&gt; No worries in the world&quot;,
+    &quot;&gt; Am I forgetting something?&quot;,
+    &quot;&gt; Maybe I should stop?&quot;
+))
+(set: _currentText to _textToContinue&#39;s 1)
+
+|continueLink&gt;[
+    (display: &quot;ContinueLink&quot;)
+]&lt;br&gt;
+
+(link: &quot;&gt; Time to stop.&quot;)[
+    ($computeRandoms: &quot;Living Room&quot;)
+]}</tw-passagedata><tw-passagedata pid="26" name="ContinueLink" tags="" position="1225,500" size="100,100">{
+(link: _textToContinue&#39;s (_numberOfContinues + 1))[
+    (set: _actualTime to
+        ($computeActualTime: $freeTasks&#39;s &quot;Play Games&quot;)
+        + (random: 0, 3) * _numberOfContinues
+    )
+
+    (set: _numberOfContinues to _numberOfContinues + 1)
+    (set: $time to $time + _actualTime)
+    (set: $fernandoWellbeing to $fernandoWellbeing + 1)
+
+    (replace: ?status)[
+        (display: &quot;UpdateTime&quot;)
+    ]
+
+    (replace: ?continueLink)[
+        (if: _numberOfContinues &lt; _textToContinue&#39;s length)[
+            (display: &quot;ContinueLink&quot;)
+        ]
+        (else:)[
+            Maybe it&#39;s time to stop playing...
+        ]
+    ]
+]
+}</tw-passagedata><tw-passagedata pid="27" name="Time To Sleep" tags="" position="1825,50" size="100,100">You see the time, and you notice it&#39;s a tiny bit past your bed time. You depart for bed and get ready for a new day.
+
+[[&quot;&gt; Temporary Placement&quot; -&gt;Fernando Bedroom]] 
+
+&lt;!-- 
+Here should show day stats before continuing
+
+1. Show each person&#39;s stats maybe?
+2. Show if schedule was followed?
+3. Print some text that shows how you&#39;re doing?
+--&gt;
+
+</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
