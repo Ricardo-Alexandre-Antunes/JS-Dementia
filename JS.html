@@ -10,17 +10,17 @@
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play JS.</tw-noscript></noscript></tw-story>
 <tw-storydata name="JS" startnode="1" creator="Twine" creator-version="2.12.1" format="Harlowe" format-version="3.3.9" ifid="76684848-CCD1-49EA-952B-17A0EB4B84A4" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
-@import url('https://fonts.googleapis.com/css2?family=Redaction+50:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
 
 /* ================================
    COLOURS
 ================================ */
 
 :root {
-    --background: #777078;
+    --background: #151613;
     --panel: #171916;
     --panel-border: #080908;
-    --text: #d9d9a0;
+    --text: #ffffb5;
     --green: #82b77b;
     --green-dark: #466c49;
     --yellow: #e6df91;
@@ -48,13 +48,24 @@ tw-story {
    GAME WINDOW
 ================================ */
 
+img{
+
+width:70%;
+height:70%;
+display: block;
+margin: auto;
+margin: auto;
+
+}
+
 tw-passage {
-    font-family: "Redaction 50", sans-serif;
+    font-family: "Silkscreen", sans-serif;
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.05;
+  	letter-spacing: 0.1px;
 
     background: #171916;
-    border: 3px solid #080908;
+    border: 3px solid #6b8c42;
     box-shadow: 0 5px 0 rgba(0,0,0,0.35);
 
     padding: 24px;
@@ -201,7 +212,10 @@ He was about to take over the most difficult case he could ever have.
 
 
 
-(text-colour:green)+(t8n-depart:&quot;blur&quot;)+(t8n-arrive:&quot;blur&quot;)+(t8n-time:1s)[[&gt; A new life-&gt;Startup]]</tw-passagedata><tw-passagedata pid="6" name="Living Room" tags="" position="1500,375" size="100,100">{(if:$beginGame is true)[(print: &quot;The news haven&#39;t quite sunk in yet. You&#39;ve lived with your parents for about 3 weeks. Things are weird, your father is more isolated, your mother tries to be positive but she knows things aren&#39;t going very well... you know it is up to you to change things, to care for your father. But you must also look after yourself.
+(text-colour:green)+(t8n-depart:&quot;blur&quot;)+(t8n-arrive:&quot;blur&quot;)+(t8n-time:1s)[[&gt; A new life-&gt;Startup]]</tw-passagedata><tw-passagedata pid="6" name="Living Room" tags="" position="1500,375" size="100,100">&lt;img src=&quot;D:\MESTRADO\ANO 2\1º Semestre\JOGOS SÉRIOS\Aulas Práticas\JOGO TWINE\Actual Jogo\JS-Dementia\imagens\Default Screens\Default_Living_Room.png&quot;&gt;
+
+{(if:$beginGame is true)[(print: &quot;The news haven&#39;t quite sunk in yet. You&#39;ve lived with your parents for about 3 weeks. Things are weird, your father is more isolated, your mother tries to be positive but she knows things aren&#39;t going very well... you know it is up to you to change things, to care for your father. But you must also look after yourself.
+
 
 &lt;i&gt;&lt;span style=&#39;color:#00FFFF&#39;&gt;Your task is to balance your own wellbeing with your father&#39;s wellbeing, while saving your money for expenses that are really needed. Do it for 5 days, and you could be happy forever. Should you fail to manage your wellbeings, something bad may happen...
 
@@ -213,11 +227,15 @@ Start by checking the schedule, to see what tasks you have for today.&lt;/span&g
     (display: &quot;UpdateTime&quot;)
 ]}
 
+
+
 You&#39;re in the living room.
 
 Here you can check today&#39;s schedule, play some games, read a book, or examine the bookshelves. You can also move over to other rooms.
 
+
 &#39;&#39;Actions&#39;&#39;
+
 {(if: $checkedScheduleToday is false) [
 (text-color:yellow)[
     (link: &quot;&gt; Check Schedule: &quot; + ($convertToTime: $freeTasks&#39;s &quot;Check Schedule&quot;))[
@@ -552,9 +570,12 @@ He&#39;s confused, clearly, but you were still not ready for that. Do you go wit
     (display: &quot;UpdateTime&quot;)
 ]}
 
+&lt;img src=&quot;D:\MESTRADO\ANO 2\1º Semestre\JOGOS SÉRIOS\Aulas Práticas\JOGO TWINE\Actual Jogo\JS-Dementia\imagens\Default Screens\Default_Kitchen.png&quot;&gt;
+
 You&#39;re in the kitchen.
 
 Here you can cook meals, have a snack, or read some recipes.
+
 
 &#39;&#39;Actions&#39;&#39;
 {(if: $currentTask is 2)[
@@ -583,6 +604,8 @@ Here you can cook meals, have a snack, or read some recipes.
 [[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="16" name="Fernando Bedroom" tags="" position="1850,125" size="100,100">{(replace: ?status)[
     (display: &quot;UpdateTime&quot;)
 ]}
+
+&lt;img src=&quot;D:\MESTRADO\ANO 2\1º Semestre\JOGOS SÉRIOS\Aulas Práticas\JOGO TWINE\Actual Jogo\JS-Dementia\imagens\Default Screens\Default_Fernando_Bedroom.png&quot;&gt;
 
 You&#39;re in your bedroom.
 
