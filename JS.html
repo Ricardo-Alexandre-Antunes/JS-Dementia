@@ -304,6 +304,7 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 (set: $checkedScheduleToday to false)
 (set: $timeToSleep to 90) &lt;!-- past this time, automatically go to sleep --&gt;
 (set: $day to 1)
+(set: $numberOfContinues to 0) &lt;!-- specific to playing videogame alone--&gt;
 
 &lt;!-- Metric Variables --&gt;
 (set: $tasksCompletedOnTimeDay to 0)
@@ -312,12 +313,16 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 (set: $tasksCompletedAlmostOnTimeTotal to 0)
 (set:$tasksCompletedLateDay to 0)
 (set:$tasksCompletedLateTotal to 0)
-(set: $tasksNotCompletedDay to 6)
+(set: $tasksNotCompletedDay to 5)
 (set: $tasksNotCompletedTotal to 0)
 (set: $timeSpentHelpingDay to 0)
 (set: $timeSpentHelpingTotal to 0)
 (set: $timeSpentOnSelfDay to 0)
 (set: $timeSpentOnSelfTotal to 0)
+(set: $timeWentToBed to 0)
+(set: $daysSinceShower to 0)
+(set: $entretainedToday to false)
+
 
 &lt;!--- Macros ---&gt;
 &lt;!--- Convert number to Time ---&gt;
@@ -414,7 +419,7 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     ]
 ]))
 &lt;!-- Define schedule time expectations --&gt;
-(set: $scheduleTimes to (a:  ($convertMinutesToTime: 615), ($convertMinutesToTime: 645), ($convertMinutesToTime: 675), ($convertMinutesToTime: 780), ($convertMinutesToTime: 960), ($convertMinutesToTime: 1260)))
+(set: $scheduleTimes to (a:  ($convertMinutesToTime: 615), ($convertMinutesToTime: 645), ($convertMinutesToTime: 725), ($convertMinutesToTime: 780), ($convertMinutesToTime: 960), ($convertMinutesToTime: 1260)))
 
 (go-to:&quot;Living Room&quot;)
 </tw-passagedata><tw-passagedata pid="8" name="Header" tags="header" position="700,550" size="100,100">{
@@ -433,35 +438,38 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 
             (print: &quot; | Afonzo: &quot; + (str: $afonzoWellbeing))
             (print: &quot; | Fernando: &quot; + (str: $fernandoWellbeing))
+            (print: &quot; | Balance: &quot; + (str: $money))
         ]
     &lt;/div&gt;
 ]
 
 &lt;!-- Status Checks --&gt;
 (live: 200ms)[
-    (set: $time to it + 0.001)
-    (if: $showHeader is true)[
-        (rerun: ?clock)
-    ]
-    (if: (floor: $time / 100) &gt;= $day and $showHeader is true)[
-    	(set: $day to $day + 1)
-    	(go-to: &quot;Time To Sleep&quot;)
-    ]
-    &lt;!-- Handle win / loss cases --&gt;
-    (if: $fernandoWellbeing &lt;= 0) [
-    	(stop:)
-        (set: $showHeader to false)
-        (go-to: &quot;Fernando Unwell Begin&quot;)
-    ]
-    (if: $afonzoWellbeing &lt;= 0) [
-    	(stop:)
-        (set: $showHeader to false)
-        (go-to: &quot;Afonzo Unwell Begin&quot;)
-     ]
-     (if: $time &gt;= 500) [
-    	(stop:)
-        (set: $showHeader to false)
-        (go-to: &quot;Good Ending&quot;)
+	(if: $showHeader is true) [
+      (set: $time to it + 0.001)
+      (if: $showHeader is true)[
+          (rerun: ?clock)
+      ]
+      (if: (floor: $time / 100) &gt;= $day and $showHeader is true)[
+          (set: $day to $day + 1)
+          (go-to: &quot;Time To Sleep&quot;)
+      ]
+      &lt;!-- Handle win / loss cases --&gt;
+      (if: $fernandoWellbeing &lt;= 0) [
+          (stop:)
+          (set: $showHeader to false)
+          (go-to: &quot;Fernando Unwell Begin&quot;)
+      ]
+      (if: $afonzoWellbeing &lt;= 0) [
+          (stop:)
+          (set: $showHeader to false)
+          (go-to: &quot;Afonzo Unwell Begin&quot;)
+       ]
+       (if: $time &gt;= 500) [
+          (stop:)
+          (set: $showHeader to false)
+          (go-to: &quot;Good Ending&quot;)
+       ]
      ]
 ]
 }</tw-passagedata><tw-passagedata pid="9" name="Check Schedule" tags="" position="1350,375" size="100,100">{(set: _timeToClock to (macro: num-type _time, [
@@ -487,12 +495,11 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 ]))}
 
 You check your schedule.
-0. (if: $currentTask is 1)[ Wake up Dad @ (_timeToClock: $scheduleTimes&#39;s 1) &#39;&#39;←&#39;&#39;] (else:) [~~Wake up Dad @ (_timeToClock: $scheduleTimes&#39;s 1)~~]
+0. (if: $currentTask is 1)[ Check up with your Dad at his office @ (_timeToClock: $scheduleTimes&#39;s 1) &#39;&#39;←&#39;&#39;] (else:) [~~Check up with your Dad at his office @ (_timeToClock: $scheduleTimes&#39;s 1)~~]
 0. (if: $currentTask &lt; 2) [Make meal for Dad @ (_timeToClock: $scheduleTimes&#39;s 2)] (else-if: $currentTask is 2) [Make meal for Dad @ (_timeToClock: $scheduleTimes&#39;s 2) &#39;&#39;←&#39;&#39;] (else:) [~~Make meal for Dad @ (_timeToClock: $scheduleTimes&#39;s 2)~~]
 0. (if: $currentTask &lt; 3) [Help Dad bathe @ (_timeToClock: $scheduleTimes&#39;s 3)] (else-if: $currentTask is 3) [Help Dad bathe @ (_timeToClock: $scheduleTimes&#39;s 3) &#39;&#39;←&#39;&#39;] (else:) [~~Help Dad bathe @ (_timeToClock: $scheduleTimes&#39;s 3)~~]
 0. (if: $currentTask &lt; 4) [Have Lunch with Dad @ (_timeToClock: $scheduleTimes&#39;s 4)] (else-if: $currentTask is 4) [Have Lunch with Dad @ (_timeToClock: $scheduleTimes&#39;s 4) &#39;&#39;←&#39;&#39;] (else:) [~~Have Lunch with Dad @ (_timeToClock: $scheduleTimes&#39;s 4)~~]
 0. (if: $currentTask &lt; 5) [Go on a walk with Dad @ (_timeToClock: $scheduleTimes&#39;s 5)] (else-if: $currentTask is 5) [Go on a walk with Dad @ (_timeToClock: $scheduleTimes&#39;s 5) &#39;&#39;←&#39;&#39;] (else:) [~~Go on a walk with Dad @ (_timeToClock: $scheduleTimes&#39;s 5)~~]
-0. (if: $currentTask &lt; 6) [Help Dad go to sleep @ (_timeToClock: $scheduleTimes&#39;s 6)] (else-if: $currentTask is 6) [Help Dad go to sleep @ (_timeToClock: $scheduleTimes&#39;s 6) &#39;&#39;←&#39;&#39;] (else:) [~~Help Dad go to sleep @ (_timeToClock: $scheduleTimes&#39;s 6)~~]
 
 {(set: $debugGlobalVariable to ($computeActualTime: $freeTasks&#39;s &quot;Check Schedule&quot;))}
 
@@ -508,13 +515,13 @@ You check your schedule.
 
 You suddenly remember that there was a huge discount for safety equipment used by people with Alzheimer&#39;s, but this discount ends today. If you leave now, you could get the equipment and install it, improving both your and Afonzo&#39;s lives. But it costs serious money to get it...
 
-(link: &quot;&gt; Get the equipment: -200€&quot;) [
+(link: &quot;&gt; Get the equipment: -200€ &amp; &quot; + ($convertToTime: ($convertMinutesToTime: 180)) [
 	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
     (set: $fernandoWellbeing to $fernandoWellbeing + 1)
-    (set: $time to $time + 15)
-    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + 15)
+    (set: $time to $time + ($convertMinutesToTime: 180))
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay +  ($convertMinutesToTime: 180))
     (set: $money to $money - 200)
-    (go-to: &quot;Living Room&quot;)
+    (go-to: &quot;Equipment Discount 2&quot;)
 ]
 
 (link: &quot;&gt; Wait for another opportunity&quot;) [
@@ -529,7 +536,7 @@ You&#39;re tired and don&#39;t really feel like moving, but your father insists 
     (set: $fernandoWellbeing to $fernandoWellbeing - 1)
     (set: $time to $time + 10)
     (set: $timeSpentHelpingDay to $timeSpentHelpingDay + 10)
-    (go-to: &quot;Living Room&quot;)
+    (go-to: &quot;Go Outside Now 2&quot;)
 ]
 
 (link: &quot;&gt; It will have to be another time...&quot;) [
@@ -541,18 +548,21 @@ You&#39;re tired and don&#39;t really feel like moving, but your father insists 
 There&#39;s a very fun movie in the cinema, and you really want to go see it; however, if you go, you&#39;ll be leaving your father without care for at least 3 hours. The risk that he needs something and you&#39;re not there to help him is huge. Still, you want to do something different. Do you take the risk?
 
 (link: &quot;&gt; Go to the movies&quot;) [
+    (set: $time to $time + 15)
+    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + 15)
+
 	&lt;!-- 50% chance of success --&gt;
     (if: (random: 1, 100) &lt;= 50) [
     	&lt;!-- success --&gt;
         (set: $fernandoWellbeing to $fernandoWellbeing + 2)
+        (go-to:&quot;Going To Cinema Good&quot;)
     ]
     (else:) [
     	(set: $fernandoWellbeing to $fernandoWellbeing - 3)
         (set: $afonzoWellbeing to $afonzoWellbeing - 2)
+        (go-to:&quot;Going To Cinema Bad&quot;)
     ]
-    (set: $time to $time + 15)
-    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + 15)
-    (go-to: &quot;Living Room&quot;)
+
 ]
 
 (link: &quot;&gt; Stay at home&quot;) [
@@ -639,6 +649,7 @@ This is where you can sleep until tomorrow, if it is nearing night time.
 
 (link:&quot;&gt; I need my beauty sleep&quot;) [
 	(set: $fernandoWellbeing to $fernandoWellbeing + 1)
+    (set: $timeWentToBed to $time % 100)
     (go-to: &quot;Voluntary Sleeping&quot;)
 ]
 
@@ -702,10 +713,24 @@ This is the bathroom. Here you can take a shower if you&#39;re feeling dirty.
 
 You&#39;re in your father&#39;s office.
 
-There is nothing to do here, except admire your father&#39;s accomplishments.
+
+(if: $currentTask is 1)[
+	You see your father sitting at the desk, looking at his old cases.
+] (else:) [
+	There is nothing to do here, except admire your father&#39;s accomplishments.
+]
 
 &#39;&#39;Actions&#39;&#39;
+{(if: $currentTask is 1)[
+    ($colorTaskLink:
+        &quot;&gt; Ask your father how he is: &quot; + ($convertToTime: $normalTasks&#39;s &quot;Wake up Dad&quot;),
+        $scheduleTimes&#39;s $currentTask,
+        $time,
+        &quot;Wake Up Dad&quot;
+    )
+] (else:) [
 [[&gt; Examine old cases-&gt;Examine Cases]]
+]}
 
 &#39;&#39;Navigation&#39;&#39;
 [[&gt; Go to the living room-&gt;Living Room]]
@@ -760,30 +785,39 @@ You play some videogames by yourself.
 
 For a while, the world stops, and you have a great time. You forget that you need to care for someone. You are... truly happy. And what would make you even happier? Continue playing.
 
-{(set: _numberOfContinues to 0)
-(set: _textToContinue to (a:
-    &quot;&gt; Just a bit more&quot;,
-    &quot;&gt; I&#39;m having so much fun!&quot;,
-    &quot;&gt; No worries in the world&quot;,
-    &quot;&gt; Am I forgetting something?&quot;,
-    &quot;&gt; Maybe I should stop?&quot;
-))
-(set: _currentText to _textToContinue&#39;s 1)
+{
+ 	(set: $entretainedToday to true)
+    (set: _actualTime to
+    ($computeActualTime: $freeTasks&#39;s &quot;Play Games&quot;)
+    + (random: 0, $numberOfContinues)
+    )
+    (set: $fernandoWellbeing to $fernandoWellbeing + 1)
+    (set: $numberOfContinues to $numberOfContinues + 1)
+    (set: $time to $time + _actualTime)
+    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _actualTime)
+    (set: _textToContinue to (a:
+        &quot;&gt; Just a bit more&quot;,
+        &quot;&gt; I&#39;m having so much fun!&quot;,
+        &quot;&gt; No worries in the world&quot;,
+        &quot;&gt; Am I forgetting something?&quot;,
+        &quot;&gt; Maybe I should stop?&quot;
+    ))
+    (set: _currentText to _textToContinue&#39;s 1)
 
-|continueLink&gt;[
-    (display: &quot;ContinueLink&quot;)
-]&lt;br&gt;
+    |continueLink&gt;[
+        (display: &quot;ContinueLink&quot;)
+    ]&lt;br&gt;
 
-(link: &quot;&gt; Time to stop.&quot;)[
-    ($computeRandoms: &quot;Living Room&quot;)
+    (link: &quot;&gt; Time to stop.&quot;)[
+        ($computeRandoms: &quot;Living Room&quot;)
 ]}</tw-passagedata><tw-passagedata pid="25" name="ContinueLink" tags="" position="1200,500" size="100,100">{
-(link: _textToContinue&#39;s (_numberOfContinues + 1))[
+(link: _textToContinue&#39;s ($numberOfContinues + 1))[
     (set: _actualTime to
         ($computeActualTime: $freeTasks&#39;s &quot;Play Games&quot;)
-        + (random: 0, _numberOfContinues)
+        + (random: 0, $numberOfContinues)
     )
 	(set: $fernandoWellbeing to $fernandoWellbeing + 1)
-    (set: _numberOfContinues to _numberOfContinues + 1)
+    (set: $numberOfContinues to $numberOfContinues + 1)
     (set: $time to $time + _actualTime)
     (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _actualTime)
     
@@ -793,7 +827,7 @@ For a while, the world stops, and you have a great time. You forget that you nee
     ]
 
     (replace: ?continueLink)[
-        (if: _numberOfContinues &lt; _textToContinue&#39;s length)[
+        (if: $numberOfContinues &lt; _textToContinue&#39;s length)[
             (display: &quot;ContinueLink&quot;)
         ]
         (else:)[
@@ -845,10 +879,9 @@ Total accomplishments:
 
 How are you doing?
 
-* Your sleep quality has been good
-* Your hygiene has been good
-* You have been feeding yourself well
-* You have entretained yourself
+* Your sleep quality was (if: (100 - $timeWentToBed) % 100 &gt; 10) [good] (else:) [not great]
+* Your hygiene has been (if: $daysSinceLastShower is 0) [great] (else-if: $daysSinceLastShower &lt; 2) [ok...] (else:) [... smelly.]
+* You have (if: $entretainedToday is false) [not] entretained yourself.
 
 &lt;!-- Punishment: the least well Fernando is, the later he wakes up --&gt;
 (link: &quot;&gt; A new day approaches.&quot;) [
@@ -856,13 +889,14 @@ How are you doing?
     (set: $tasksCompletedOnTimeDay to 0)
     (set: $tasksCompletedAlmostOnTimeDay to 0)
     (set: $tasksCompletedLateDay to 0)
-    (set: $tasksNotCompletedDay to 6)
+    (set: $tasksNotCompletedDay to 5)
     (set: $timeSpentHelpingDay to 0)
     (set: $timeSpentOnSelfDay to 0)
+	(set: $numberOfContinues to 0) &lt;!-- specific to playing videogame alone--&gt;
     (go-to: &quot;Fernando Bedroom&quot;)
-]</tw-passagedata><tw-passagedata pid="27" name="Wake Up Dad" tags="" position="2100,375" size="100,100">You wake him up. Rude af.
+]</tw-passagedata><tw-passagedata pid="27" name="Wake Up Dad" tags="" position="1950,650" size="100,100">&quot;Hello, my boy! I was just looking at some old cases, nothing much. This brain can&#39;t do much thinking anymore, ha. Shall we go eat some breakfast?&quot;
 
-(link: &quot;&gt; The hardest choices require the strongest wills&quot;) [
+(link: &quot;&gt; We probably should go eat breakfast soon.&quot;) [
 	(set: _timeSpentOnTask to  ($computeActualTime: $normalTasks&#39;s &quot;Wake up Dad&quot;))
 	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 1))
 	(if: _timeDifference &lt; 1) [
@@ -885,7 +919,7 @@ How are you doing?
     (set: $time to $time + _timeSpentOnTask)
     (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
-    ($computeRandoms: &quot;Father Bedroom&quot;)
+    ($computeRandoms: &quot;Father Office&quot;)
 ]</tw-passagedata><tw-passagedata pid="28" name="Make Meal Dad" tags="" position="1650,0" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/continue-making-rooms/imagens/Events/Event_Afonzo_Dinner_Random_Afonzo_Rage.png&quot;&gt;
 
 
@@ -952,7 +986,7 @@ Your father&#39;s tired but he had a great time.
 
 (link: &quot;&gt; What a pleasant meal.&quot;) [
 	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Walk with Dad&quot;))
-	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 2))
+	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 5))
 	(if: _timeDifference &lt; 1) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 2)
         (set: $fernandoWellbeing to $fernandoWellbeing + 1)
@@ -993,6 +1027,7 @@ You go to buy groceries for yourself. It&#39;s some time off, away from distract
 You take some time for yourself, to improve your hygiene. You turn on the hot water, and let the water run down your body. It feels nice to have some time for yourself. After you take your shower, you clean yourself up, and continue charging on.
 
 (link: &quot;&gt; That was nice.&quot;) [
+	(set: $daysSinceShower to 0)
     (set: $fernandoWellbeing to $fernandoWellbeing + 1)
     (set: _timeSpentOnShower to ($computeActualTime: $normalTasks&#39;s &quot;Take Shower&quot;))
     (set: $time to $time + _timeSpentOnShower)
@@ -1097,10 +1132,9 @@ Total accomplishments:
 
 How are you doing?
 
-* Your sleep quality has been good
-* Your hygiene has been good
-* You have been feeding yourself well
-* You have entretained yourself
+* Your sleep quality was (if: (100 - $timeWentToBed) % 100 &gt; 10) [good] (else:) [not great]
+* Your hygiene has been (if: $daysSinceLastShower is 0) [great] (else-if: $daysSinceLastShower &lt; 2) [ok...] (else:) [... smelly.]
+* You have (if: $entretainedToday is false) [not] entretained yourself.
 
 &lt;!-- Punishment: the least well Fernando is, the later he wakes up --&gt;
 (link: &quot;&gt; A new day approaches.&quot;) [
@@ -1108,11 +1142,29 @@ How are you doing?
     (set: $tasksCompletedOnTimeDay to 0)
     (set: $tasksCompletedAlmostOnTimeDay to 0)
     (set: $tasksCompletedLateDay to 0)
-    (set: $tasksNotCompletedDay to 6)
+    (set: $tasksNotCompletedDay to 5)
     (set: $timeSpentHelpingDay to 0)
     (set: $timeSpentOnSelfDay to 0)
+    (set: $numberOfContinues to 0) &lt;!-- specific to playing videogame alone--&gt;
+    (set: $entretainedToday to false)
     (go-to: &quot;Fernando Bedroom&quot;)
-]</tw-passagedata></tw-storydata>
+]</tw-passagedata><tw-passagedata pid="37" name="Going To Cinema Good" tags="" position="1025,750" size="100,100">You go to the cinema, and the movie was amazing. One of the best experiences you&#39;ve had in the last month or so. You needed that - you really needed that. As you come home, your father and mother both seem very relaxed. Looks like you did well in giving yourself a moment of entretainment.
+
+[[&gt; Hurrah!-&gt;Living Room]] </tw-passagedata><tw-passagedata pid="38" name="Going to Cinema Bad" tags="" position="1025,775" size="100,100">You go to the cinema. The movie was fine. But when you leave, you check your phone. You have 20 unanswered calls from your mother. Turns out, while you are away, your father had a huge meltdown and your mother had to deal with it alone. You rush home, and while things calmed down, the mood was tense. She didn&#39;t want to say anything, but it would have been better if you had not gone to the cinema...
+
+[[&gt; What have I done...-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="39" name="Groceries Good" tags="" position="1025,575" size="100,100">&quot;I will!&quot;
+
+You let it slide... his mind is confused, and there is no point in correcting him. Altough it hurts you, it would have hurt more to see him even more confused. You go to buy some groceries as you leave with a tear in your eye.
+
+[[&gt; It hurts but I have to let it go.-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="40" name="Groceries Bad" tags="" position="1025,600" size="100,100">You correct your father. You say: &quot;Father, I haven&#39;t been in school in years!&quot;.
+
+He looks at you. Then he looks around. He seems very confused. His view of the world seemed to shatter right there. His eye drops a tear, and as you leave, you start crying also. Why did you correct him? It served no good purpose...
+
+[[&gt; He was already confused... and I made it worse...-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="41" name="Equipment Discount 2" tags="" position="825,550" size="100,100">You drive to the store and buy the equipment with the discount. A big chunk of money is gone, but it was worth it. The house feels much safer and your father can walk around more easily. It&#39;s a win for everyone!
+
+[[&gt; Look at my father... so happy!-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="42" name="Go Outside Now 2" tags="" position="825,700" size="100,100">You go for the walk, and altough you have to walk very slowly, and many times had to stop, it was nice. A nice breath of fresh air. However, ironically, it made you more exhausted, and you had to rest for a while...
+
+[[&gt; It was worth it though...-&gt;Living Room]] </tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
