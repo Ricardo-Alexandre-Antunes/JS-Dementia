@@ -102,6 +102,7 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
         &quot;Walk with Dad&quot;
     )
 ]}
+[[&gt; Go buy groceries-&gt;Independent Groceries]]
 
 
 &#39;&#39;Navigation&#39;&#39;
@@ -111,7 +112,7 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 [[&gt; Go to the bathroom-&gt;Bathroom]]
 [[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="7" name="Startup" tags="" position="1100,375" size="100,100">
 &lt;!--- Events (Passage Names) ---&gt;
-&lt;!--- 1 time == 14 minutes ---&gt;
+&lt;!--- 1 time == 14.4 minutes ---&gt;
 (set: $randomEvents to (a: &quot;Equipment Discount&quot;, &quot;Go Outside Now&quot;, &quot;Going to Cinema&quot;, &quot;Groceries&quot;,  &quot;Random Rage&quot;))
 
 &lt;!--- (task, duration) ---&gt;
@@ -127,11 +128,25 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 (set: $beginGame to true)
 (set: $showHeader to true)
 (set: $targetPassage to &quot;Living Room&quot;)
-(set: $randomEventChance to 5) &lt;!-- every time the random event fetch is called, 5% chance that a random event is triggered --&gt;
-
-
+(set: $randomEventChance to 15) &lt;!-- every time the random event fetch is called, 15% chance that a random event is triggered --&gt;
 (set: $currentTask to 1)
 (set: $checkedScheduleToday to false)
+(set: $timeToSleep to 90) &lt;!-- past this time, automatically go to sleep --&gt;
+(set: $day to 1)
+
+&lt;!-- Metric Variables --&gt;
+(set: $tasksCompletedOnTimeDay to 0)
+(set: $tasksCompletedOnTimeTotal to 0)
+(set: $tasksCompletedAlmostOnTimeDay to 0)
+(set: $tasksCompletedAlmostOnTimeTotal to 0)
+(set:$tasksCompletedLateDay to 0)
+(set:$tasksCompletedLateTotal to 0)
+(set: $tasksNotCompletedDay to 6)
+(set: $tasksNotCompletedTotal to 0)
+(set: $timeSpentHelpingDay to 0)
+(set: $timeSpentHelpingTotal to 0)
+(set: $timeSpentOnSelfDay to 0)
+(set: $timeSpentOnSelfTotal to 0)
 
 &lt;!--- Macros ---&gt;
 &lt;!--- Convert number to Time ---&gt;
@@ -197,7 +212,7 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 
 &lt;!-- Convert minutes to time--&gt;
 (set: $convertMinutesToTime to (macro: num-type _minutes, [
-	(output-data: _minutes * 100 / 1400)
+	(output-data: _minutes * 100 / 1440)
 ]))
 
 
@@ -218,14 +233,14 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     num-type _currentTime,
     str-type _targetPassage,
 [
-    (if: (abs: _referenceTime - _currentTime % 100) &lt; 2)[
+    (if: (abs: _referenceTime - _currentTime % 100) &lt; 1)[
         (output:)[{
             (text-color: green)[
                 (link-goto: _linkText, _targetPassage)
             ]
         }]
     ]
-    (else-if: (abs: _referenceTime - _currentTime % 100) &lt;= 5)[
+    (else-if: (abs: _referenceTime - _currentTime % 100) &lt;= 3)[
         (output:)[{
             (text-color: yellow)[
                 (link-goto: _linkText, _targetPassage)
@@ -241,7 +256,7 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     ]
 ]))
 &lt;!-- Define schedule time expectations --&gt;
-(set: $scheduleTimes to (a:  ($convertMinutesToTime: 615), ($convertMinutesToTime: 645), ($convertMinutesToTime: 675), ($convertMinutesToTime: 780), ($convertMinutesToTime: 960)))
+(set: $scheduleTimes to (a:  ($convertMinutesToTime: 615), ($convertMinutesToTime: 645), ($convertMinutesToTime: 675), ($convertMinutesToTime: 780), ($convertMinutesToTime: 960), ($convertMinutesToTime: 1260)))
 
 (go-to:&quot;Living Room&quot;)
 </tw-passagedata><tw-passagedata pid="8" name="Header" tags="header" position="700,550" size="100,100">{
@@ -264,10 +279,15 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     &lt;/div&gt;
 ]
 
+&lt;!-- Status Checks --&gt;
 (live: 200ms)[
     (set: $time to it + 0.001)
     (if: $showHeader is true)[
         (rerun: ?clock)
+    ]
+    (if: (floor: $time / 100) &gt;= $day and $showHeader is true)[
+    	(set: $day to $day + 1)
+    	(go-to: &quot;Time To Sleep&quot;)
     ]
 ]
 }</tw-passagedata><tw-passagedata pid="9" name="Check Schedule" tags="" position="1350,375" size="100,100">{(set: _timeToClock to (macro: num-type _time, [
@@ -295,9 +315,10 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 You check your schedule.
 0. (if: $currentTask is 1)[ Wake up Dad @ (_timeToClock: $scheduleTimes&#39;s 1) &#39;&#39;←&#39;&#39;] (else:) [~~Wake up Dad @ (_timeToClock: $scheduleTimes&#39;s 1)~~]
 0. (if: $currentTask &lt; 2) [Make meal for Dad @ (_timeToClock: $scheduleTimes&#39;s 2)] (else-if: $currentTask is 2) [Make meal for Dad @ (_timeToClock: $scheduleTimes&#39;s 2) &#39;&#39;←&#39;&#39;] (else:) [~~Make meal for Dad @ (_timeToClock: $scheduleTimes&#39;s 2)~~]
-0. Help Dad bathe @ (_timeToClock: $scheduleTimes&#39;s 3)
-0. Have Lunch with Dad @ (_timeToClock: $scheduleTimes&#39;s 4)
-0. Go on a walk with Dad @ (_timeToClock: $scheduleTimes&#39;s 5)
+0. (if: $currentTask &lt; 3) [Help Dad bathe @ (_timeToClock: $scheduleTimes&#39;s 3)] (else-if: $currentTask is 3) [Help Dad bathe @ (_timeToClock: $scheduleTimes&#39;s 3) &#39;&#39;←&#39;&#39;] (else:) [~~Help Dad bathe @ (_timeToClock: $scheduleTimes&#39;s 3)~~]
+0. (if: $currentTask &lt; 4) [Have Lunch with Dad @ (_timeToClock: $scheduleTimes&#39;s 4)] (else-if: $currentTask is 4) [Have Lunch with Dad @ (_timeToClock: $scheduleTimes&#39;s 4) &#39;&#39;←&#39;&#39;] (else:) [~~Have Lunch with Dad @ (_timeToClock: $scheduleTimes&#39;s 4)~~]
+0. (if: $currentTask &lt; 5) [Go on a walk with Dad @ (_timeToClock: $scheduleTimes&#39;s 5)] (else-if: $currentTask is 5) [Go on a walk with Dad @ (_timeToClock: $scheduleTimes&#39;s 5) &#39;&#39;←&#39;&#39;] (else:) [~~Go on a walk with Dad @ (_timeToClock: $scheduleTimes&#39;s 5)~~]
+0. (if: $currentTask &lt; 6) [Help Dad go to sleep @ (_timeToClock: $scheduleTimes&#39;s 6)] (else-if: $currentTask is 6) [Help Dad go to sleep @ (_timeToClock: $scheduleTimes&#39;s 6) &#39;&#39;←&#39;&#39;] (else:) [~~Help Dad go to sleep @ (_timeToClock: $scheduleTimes&#39;s 6)~~]
 
 {(set: $debugGlobalVariable to ($computeActualTime: $freeTasks&#39;s &quot;Check Schedule&quot;))}
 
@@ -314,6 +335,7 @@ You check your schedule.
 	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
     (set: $fernandoWellbeing to $fernandoWellbeing + 1)
     (set: $time to $time + 15)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + 15)
     (set: $money to $money - 200)
     (go-to: &quot;Living Room&quot;)
 ]
@@ -326,6 +348,7 @@ You check your schedule.
 	(set: $afonzoWellbeing to $afonzoWellbeing + 2)
     (set: $fernandoWellbeing to $fernandoWellbeing - 1)
     (set: $time to $time + 10)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + 10)
     (go-to: &quot;Living Room&quot;)
 ]
 
@@ -345,6 +368,7 @@ You check your schedule.
         (set: $afonzoWellbeing to $afonzoWellbeing - 2)
     ]
     (set: $time to $time + 15)
+    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + 15)
     (go-to: &quot;Living Room&quot;)
 ]
 
@@ -362,6 +386,7 @@ He&#39;s confused, clearly, but you were still not ready for that. Do you go wit
     (set: $afonzoWellbeing to $afonzoWellbeing + 1)
     (set: $time to $time + 5)
     (set: $money to $money - 30)
+    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + 5)
     (go-to: &quot;Living Room&quot;)
 ]
 
@@ -369,6 +394,7 @@ He&#39;s confused, clearly, but you were still not ready for that. Do you go wit
 	(set: $fernandoWellbeing to $fernandoWellbeing - 1)
     (set: $afonzoWellbeing to $afonzoWellbeing - 1)
     (set: $time to $time + 5)
+    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + 5)
     (set: $money to $money - 30)
     (go-to: &quot;Living Room&quot;)
 ]</tw-passagedata><tw-passagedata pid="14" name="Random Rage" tags="" position="900,650" size="100,100">You&#39;re walking in the house when Afonzo starts screaming in his office. You don&#39;t quite understand what he&#39;s saying but he&#39;s very confused and angry. You try to calm him down, but it doesn&#39;t do much...
@@ -495,21 +521,27 @@ After a while, the task is done and you leave the bathroom.
 
 
 (link: &quot;&gt; Thank you narrator&quot;) [
+	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Bathe Dad&quot;))
 	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 3))
-	(if: _timeDifference &lt; 2) [
+	(if: _timeDifference &lt; 1) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 2)
         (set: $fernandoWellbeing to $fernandoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 3) [
+        (set: $tasksCompletedOnTimeDay to $tasksCompletedOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 2) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 4) [
-    	(set: $afonzoWellbeing to $afonzoWellbeing - 1)
-        (set: $fernandoWellbeing to $fernandoWellbeing - 2)
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 3) [
+    	(set: $afonzoWellbeing to $afonzoWellbeing)
+        (set: $fernandoWellbeing to $fernandoWellbeing - 1)
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
     ] (else:) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 2)
         (set: $fernandoWellbeing to $fernandoWellbeing - 3)
+        (set:$tasksCompletedLateDay to $tasksCompletedLateDay + 1)
     ]
-
-    (set: $time to $time + ($computeActualTime: $normalTasks&#39;s &quot;Bathe Dad&quot;))
+	(set: $tasksNotCompletedDay to  $tasksNotCompletedDay - 1)
+    (set: $time to $time +_timeSpentOnTask)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Father Bedroom&quot;)
 ]</tw-passagedata><tw-passagedata pid="24" name="Play Videogames" tags="" position="1350,500" size="100,100">You play some videogames.
@@ -541,6 +573,7 @@ For a while, the world stops, and you have a great time. You forget that you nee
 	(if: _numberOfContinues % 2 is 1)[(set: $fernandoWellbeing to $fernandoWellbeing + 1)]
     (set: _numberOfContinues to _numberOfContinues + 1)
     (set: $time to $time + _actualTime)
+    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _actualTime)
     
 
     (replace: ?status)[
@@ -558,8 +591,6 @@ For a while, the world stops, and you have a great time. You forget that you nee
 ]
 }</tw-passagedata><tw-passagedata pid="26" name="Time To Sleep" tags="" position="1825,50" size="100,100">You see the time, and you notice it&#39;s a tiny bit past your bed time. You depart for bed and get ready for a new day.
 
-[[&quot;&gt; Temporary Placement&quot; -&gt;Fernando Bedroom]] 
-
 &lt;!-- 
 Here should show day stats before continuing
 
@@ -568,92 +599,166 @@ Here should show day stats before continuing
 3. Print some text that shows how you&#39;re doing?
 --&gt;
 
+{
+(set: $tasksCompletedOnTimeTotal to $tasksCompletedOnTimeTotal + $tasksCompletedOnTimeDay)
+(set: $tasksCompletedAlmostOnTimeTotal to $tasksCompletedAlmostOnTimeTotal + $tasksCompletedAlmostOnTimeDay)
+(set: $tasksCompletedLateTotal to $tasksCompletedLateTotal + $tasksCompletedLateDay)
+(set: $tasksNotCompletedTotal to $tasksNotCompletedTotal + $tasksNotCompletedDay)
+(set: $timeSpentHelpingTotal to $timeSpentHelpingTotal + $timeSpentHelpingDay)
+(set: $timeSpentOnSelfTotal to $timeSpentOnSelfTotal + $timeSpentOnSelfDay)
+
+(set: $afonzoWellbeing to $afonzoWellbeing - (3 * $tasksNotCompletedDay))
+(set: $fernandoWellbeing to $fernandoWellbeing - (4 * $tasksNotCompletedDay))
+}
+
 Day accomplishments:
 
-* Tasks completed on time:
-* Tasks somewhat completed on time:
-* Tasks not completed on time:
-* Tasks not completed:
-* Time spent helping your father:
-* Time spent on yourself:
+* Tasks completed on time: $tasksCompletedOnTimeDay
+* Tasks somewhat completed on time: $tasksCompletedAlmostOnTimeDay
+* Tasks not completed on time: $tasksCompletedLateDay
+* Tasks not completed: $tasksNotCompletedDay
+* Time spent helping your father: ($convertToTime: $timeSpentHelpingDay)
+* Time spent on yourself: ($convertToTime: $timeSpentOnSelfDay)
+
+Total accomplishments:
+
+* Tasks completed on time: $tasksCompletedOnTimeTotal
+* Tasks somewhat completed on time: $tasksCompletedAlmostOnTimeTotal
+* Tasks not completed on time: $tasksCompletedLateTotal
+* Tasks not completed: $tasksNotCompletedDay
+* Time spent helping your father: ($convertToTime: $timeSpentHelpingTotal)
+* Time spent on yourself: ($convertToTime: $timeSpentOnSelfTotal)
+
+How are you doing?
+
 * Your sleep quality has been good
 * Your hygiene has been good
-* You have been feeding yourself well</tw-passagedata><tw-passagedata pid="27" name="Wake Up Dad" tags="" position="2100,375" size="100,100">You wake him up. Rude af.
+* You have been feeding yourself well
+* You have entretained yourself
+
+&lt;!-- Punishment: the least well Fernando is, the later he wakes up --&gt;
+(link: &quot;&gt; A new day approaches.&quot;) [
+	(set: $time to (floor: $time + ($convertMinutesToTime: 540 + (10 - $fernandoWellbeing) * 15)))
+    (set: $tasksCompletedOnTimeDay to 0)
+    (set: $tasksCompletedAlmostOnTimeDay to 0)
+    (set: $tasksCompletedLateDay to 0)
+    (set: $tasksNotCompletedDay to 6)
+    (set: $timeSpentHelpingDay to 0)
+    (set: $timeSpentOnSelfDay to 0)
+]</tw-passagedata><tw-passagedata pid="27" name="Wake Up Dad" tags="" position="2100,375" size="100,100">You wake him up. Rude af.
 
 (link: &quot;&gt; The hardest choices require the strongest wills&quot;) [
+	(set: _timeSpentOnTask to  ($computeActualTime: $normalTasks&#39;s &quot;Wake up Dad&quot;))
 	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 1))
-	(if: _timeDifference &lt; 2) [
+	(if: _timeDifference &lt; 1) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 2)
         (set: $fernandoWellbeing to $fernandoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 3) [
+        (set: $tasksCompletedOnTimeDay to $tasksCompletedOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 2) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 4) [
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 3) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 1)
         (set: $fernandoWellbeing to $fernandoWellbeing - 2)
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
     ] (else:) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 2)
         (set: $fernandoWellbeing to $fernandoWellbeing - 3)
+        (set:$tasksCompletedLateDay to $tasksCompletedLateDay + 1)
     ]
-    (set: $time to $time + ($computeActualTime: $normalTasks&#39;s &quot;Wake up Dad&quot;))
+    (set: $tasksNotCompletedDay to  $tasksNotCompletedDay - 1)
+    (set: $time to $time + _timeSpentOnTask)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Father Bedroom&quot;)
 ]</tw-passagedata><tw-passagedata pid="28" name="Make Meal Dad" tags="" position="1625,50" size="100,100">You cook some prision aah food for your father
 
 (link: &quot;&gt; That or starve&quot;) [
+	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Make meals&quot;))
 	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 2))
-	(if: _timeDifference &lt; 2) [
+	(if: _timeDifference &lt; 1) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 2)
         (set: $fernandoWellbeing to $fernandoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 3) [
+        (set: $tasksCompletedOnTimeDay to $tasksCompletedOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 2) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 4) [
+         (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 3) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 1)
         (set: $fernandoWellbeing to $fernandoWellbeing - 2)
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
     ] (else:) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 2)
         (set: $fernandoWellbeing to $fernandoWellbeing - 3)
+        (set:$tasksCompletedLateDay to $tasksCompletedLateDay + 1)
     ]
-    (set: $time to $time + ($computeActualTime: $normalTasks&#39;s &quot;Make meals&quot;))
+    (set: $tasksNotCompletedDay to  $tasksNotCompletedDay - 1)
+    (set: $time to $time + _timeSpentOnTask)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Kitchen&quot;)
 ]</tw-passagedata><tw-passagedata pid="29" name="Lunch with Dad" tags="" position="1475,200" size="100,100">You and your family enjoy a nice lunch.
 
 (link: &quot;&gt; What a pleasant meal.&quot;) [
+	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Have lunch with Dad&quot;))
 	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 4))
-	(if: _timeDifference &lt; 2) [
+	(if: _timeDifference &lt; 1) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 2)
         (set: $fernandoWellbeing to $fernandoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 3) [
+        (set: $tasksCompletedOnTimeDay to $tasksCompletedOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 2) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 4) [
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 3) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 1)
         (set: $fernandoWellbeing to $fernandoWellbeing - 2)
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
     ] (else:) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 2)
         (set: $fernandoWellbeing to $fernandoWellbeing - 3)
+        (set:$tasksCompletedLateDay to $tasksCompletedLateDay + 1)
     ]
-    (set: $time to $time + ($computeActualTime: $normalTasks&#39;s &quot;Have lunch with Dad&quot;))
+    (set: $tasksNotCompletedDay to  $tasksNotCompletedDay - 1)
+    (set: $time to $time + _timeSpentOnTask)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Kitchen&quot;)
 ]</tw-passagedata><tw-passagedata pid="30" name="Walk with Dad" tags="" position="1350,200" size="100,100">You go for a walk with your father. You enjoy it a lot. He is tired but he had a great time.
 
 (link: &quot;&gt; What a pleasant meal.&quot;) [
+	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Walk with Dad&quot;))
 	(set: _timeDifference to (abs: $time % 100 - $scheduleTimes&#39;s 2))
-	(if: _timeDifference &lt; 2) [
+	(if: _timeDifference &lt; 1) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 2)
         (set: $fernandoWellbeing to $fernandoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 3) [
+        (set: $tasksCompletedOnTimeDay to $tasksCompletedOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 2) [
     	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
-    ] (else-if: _timeDifference &lt; 4) [
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
+    ] (else-if: _timeDifference &lt; 3) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 1)
         (set: $fernandoWellbeing to $fernandoWellbeing - 2)
+        (set: $tasksCompletedAlmostOnTimeDay to $tasksCompletedAlmostOnTimeDay + 1)
     ] (else:) [
     	(set: $afonzoWellbeing to $afonzoWellbeing - 2)
         (set: $fernandoWellbeing to $fernandoWellbeing - 3)
+        (set:$tasksCompletedLateDay to $tasksCompletedLateDay + 1)
     ]
-    (set: $time to $time + ($computeActualTime: $normalTasks&#39;s &quot;Walk with Dad&quot;))
+    (set: $tasksNotCompletedDay to  $tasksNotCompletedDay - 1)
+    (set: $time to $time + _timeSpentOnTask)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Living Room&quot;)
+]</tw-passagedata><tw-passagedata pid="31" name="Independent Groceries" tags="" position="1500,500" size="100,100">You go to buy groceries for yourself. It&#39;s some time off, away from distractions, and the house was running empty on food. Altough this was some nice time off for yourself, leaving your father and mother alone caused some distress to them. It&#39;s clear that they need your help.
+
+
+(link: &quot;&gt; Groceries acquired, time to return.&quot;) [
+  (set: $afonzoWellbeing to $afonzoWellbeing - 2)
+  (set: $fernandoWellbeing to $fernandoWellbeing + 1)
+  (set: _timeSpentOnGroceries to ($computeActualTime: $normalTasks&#39;s &quot;Buy Groceries&quot;))
+  (set: $time to $time + _timeSpentOnGroceries)
+  (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _timeSpentOnGroceries)
+  (go-to: &quot;Living Room&quot;)
 ]</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
