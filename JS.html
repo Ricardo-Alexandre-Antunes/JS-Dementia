@@ -9,7 +9,62 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play JS.</tw-noscript></noscript></tw-story>
-<tw-storydata name="JS" startnode="1" creator="Twine" creator-version="2.12.1" format="Harlowe" format-version="3.3.9" ifid="76684848-CCD1-49EA-952B-17A0EB4B84A4" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://fonts.googleapis.com/css2?family=Redaction+50:ital,wght@0,400;0,700;1,400&display=swap');
+<tw-storydata name="JS" startnode="1" creator="Twine" creator-version="2.12.1" format="Harlowe" format-version="3.3.9" ifid="76684848-CCD1-49EA-952B-17A0EB4B84A4" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+@import url('https://fonts.googleapis.com/css2?family=Redaction+50:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ================================
+   COLOURS
+================================ */
+
+:root {
+    --background: #777078;
+    --panel: #171916;
+    --panel-border: #080908;
+    --text: #d9d9a0;
+    --green: #82b77b;
+    --green-dark: #466c49;
+    --yellow: #e6df91;
+}
+
+/* ================================
+   PAGE
+================================ */
+
+html, body {
+    background: var(--background);
+    color: var(--text);
+}
+
+tw-story {
+    max-width: 760px;
+    width: 90%;
+    margin: 30px auto;
+    padding: 0;
+  	background: transparent;
+    min-height: 0;
+}
+
+/* ================================
+   GAME WINDOW
+================================ */
+
+tw-passage {
+    font-family: "Redaction 50", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+
+    background: #171916;
+    border: 3px solid #080908;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.35);
+
+    padding: 24px;
+    color: #d9d9a0;
+}
+
+/* ================================
+   STATUS BAR
+   Your original styling preserved
+================================ */
 
 #status {
     position: fixed;
@@ -30,9 +85,91 @@
     white-space: nowrap;
 }
 
-tw-passage {
-  font-family: "Redaction 50", sans-serif;
-  font-size: 16px;
+/* ================================
+   IMAGE VIEWPORT
+================================ */
+
+.scene-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+
+    background-color: #25291f;
+    border: 2px solid var(--panel-border);
+
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.scene-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+/* ================================
+   NARRATIVE
+================================ */
+
+.narrative {
+    color: var(--text);
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+tw-passage p {
+    margin-bottom: 16px;
+}
+
+/* ================================
+   LINKS
+================================ */
+
+tw-link {
+    color: var(--green);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+tw-link:hover {
+    color: var(--yellow);
+    text-decoration: underline;
+}
+
+tw-link:visited {
+    color: var(--green-dark);
+}
+
+/* ================================
+   SEPARATORS
+================================ */
+
+hr {
+    border: none;
+    border-top: 2px solid #444b39;
+    margin: 20px 0;
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+    tw-story {
+        width: 96%;
+        margin: 10px auto;
+    }
+
+    tw-passage {
+        padding: 14px;
+    }
+
+    .scene-image {
+        margin-bottom: 18px;
+    }
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-tag name="header" color="blue"></tw-tag><tw-passagedata pid="1" name="Afonzo&#39;s past" tags="" position="350,375" size="100,100">{(set: $showHeader to false)}
 
@@ -78,7 +215,7 @@ Start by checking the schedule, to see what tasks you have for today.&lt;/span&g
 
 You&#39;re in the living room.
 
-Here you can check today&#39;s schedule, play some games, read a book, or examine the bookshelf. You can also move over to other rooms.
+Here you can check today&#39;s schedule, play some games, read a book, or examine the bookshelves. You can also move over to other rooms.
 
 &#39;&#39;Actions&#39;&#39;
 {(if: $checkedScheduleToday is false) [
@@ -102,23 +239,28 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
         &quot;Walk with Dad&quot;
     )
 ]}
-[[&gt; Go buy groceries-&gt;Independent Groceries]]
-
+[[&gt; Go buy groceries: ($convertToTime: $normalTasks&#39;s &quot;Buy Groceries&quot;)-&gt;Independent Groceries]]
+[[&gt; Play a game with your Dad: ($convertToTime: $normalTasks&#39;s &quot;Play with Dad&quot;)-&gt;Play Game With Father]]
+[[&gt; Examine Bookshelves: ??? minutes-&gt;Examine Bookshelves]]
 
 &#39;&#39;Navigation&#39;&#39;
 [[&gt; Go to Kitchen-&gt;Kitchen]]
 [[&gt; Go to your bedroom-&gt;Fernando Bedroom]]
 [[&gt; Go to your father&#39;s bedroom-&gt;Father Bedroom]]
 [[&gt; Go to the bathroom-&gt;Bathroom]]
-[[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="7" name="Startup" tags="" position="1100,375" size="100,100">
+[[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="7" name="Startup" tags="" position="1100,375" size="100,100">&lt;!-- Convert minutes to time--&gt;
+(set: $convertMinutesToTime to (macro: num-type _minutes, [
+	(output-data: _minutes * 100 / 1440)
+]))
+
 &lt;!--- Events (Passage Names) ---&gt;
 &lt;!--- 1 time == 14.4 minutes ---&gt;
 (set: $randomEvents to (a: &quot;Equipment Discount&quot;, &quot;Go Outside Now&quot;, &quot;Going to Cinema&quot;, &quot;Groceries&quot;,  &quot;Random Rage&quot;))
 
 &lt;!--- (task, duration) ---&gt;
-(set: $normalTasks to (dm:&quot;Wake up Dad&quot;,0.5,&quot;Bathe Dad&quot;,2,&quot;Make meals&quot;,2.5,&quot;Buy Groceries&quot;,10,&quot;Walk with Dad&quot;,15,&quot;Play with Dad&quot;,10, &quot;Have lunch with Dad&quot;,5))
+(set: $normalTasks to (dm:&quot;Wake up Dad&quot;, ($convertMinutesToTime: 5) ,&quot;Bathe Dad&quot;,($convertMinutesToTime: 30),&quot;Make meals&quot;,($convertMinutesToTime: 75),&quot;Buy Groceries&quot;,($convertMinutesToTime: 45),&quot;Walk with Dad&quot;,($convertMinutesToTime: 120),&quot;Play with Dad&quot;,($convertMinutesToTime: 80), &quot;Have lunch with Dad&quot;,($convertMinutesToTime: 35)))
 
-(set: $freeTasks to (dm:&quot;Take Nap&quot;,4,&quot;Play Games&quot;,2,&quot;Take Shower&quot;,1,&quot;Check Schedule&quot;,0.1))
+(set: $freeTasks to (dm:&quot;Take Nap&quot;,($convertMinutesToTime: 60),&quot;Play Games&quot;,($convertMinutesToTime: 30),&quot;Take Shower&quot;,($convertMinutesToTime: 10),&quot;Check Schedule&quot;,($convertMinutesToTime: 1), &quot;Read Book&quot;, ($convertMinutesToTime: 45)))
 
 &lt;!--- Variables ---&gt;
 (set: $afonzoWellbeing to 5)
@@ -187,14 +329,6 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     (output-data: _result)
 ]))
 
-&lt;!-- Check whether Fernando should be sleeping --&gt;
-(set: $checkForSleepHours to (macro: [
-	&lt;!-- Check if current time is between 0 and 34.3 (8 hours) BUT needs to be mod 100 --&gt;
-    (if: $time % 100 &gt; 0 and $time % 100 &lt; 34.3) [
-    	(go-to: &quot;Time To Sleep&quot;)
-    ]
-]))
-
 &lt;!-- Check and trigger random event --&gt;
 &lt;!-- Random event chance is 5% in every step --&gt;
 (set: $computeRandoms to (macro: str-type _targetPassage, [
@@ -208,11 +342,6 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     (else:) [
     	(go-to: $targetPassage)
     ]
-]))
-
-&lt;!-- Convert minutes to time--&gt;
-(set: $convertMinutesToTime to (macro: num-type _minutes, [
-	(output-data: _minutes * 100 / 1440)
 ]))
 
 
@@ -289,6 +418,22 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
     	(set: $day to $day + 1)
     	(go-to: &quot;Time To Sleep&quot;)
     ]
+    &lt;!-- Handle win / loss cases --&gt;
+    (if: $fernandoWellbeing &lt;= 0) [
+    	(stop:)
+        (set: $showHeader to false)
+        (go-to: &quot;Fernando Unwell Begin&quot;)
+    ]
+    (if: $afonzoWellbeing &lt;= 0) [
+    	(stop:)
+        (set: $showHeader to false)
+        (go-to: &quot;Afonzo Unwell Begin&quot;)
+     ]
+     (if: $time &gt;= 500) [
+    	(stop:)
+        (set: $showHeader to false)
+        (go-to: &quot;Good Ending&quot;)
+     ]
 ]
 }</tw-passagedata><tw-passagedata pid="9" name="Check Schedule" tags="" position="1350,375" size="100,100">{(set: _timeToClock to (macro: num-type _time, [
  			(set: _day to (floor: _time / 100) + 1)
@@ -403,7 +548,7 @@ He&#39;s confused, clearly, but you were still not ready for that. Do you go wit
 	(set: $afonzoWellbeing to $afonzoWellbeing - 1)
     (set: $fernandoWellbeing to $fernandoWellbeing - 2)
     (go-to: $targetPassage)
-]</tw-passagedata><tw-passagedata pid="15" name="Kitchen" tags="" position="1625,200" size="100,100">{(replace: ?status)[
+]</tw-passagedata><tw-passagedata pid="15" name="Kitchen" tags="" position="1650,125" size="100,100">{(replace: ?status)[
     (display: &quot;UpdateTime&quot;)
 ]}
 
@@ -435,13 +580,18 @@ Here you can cook meals, have a snack, or read some recipes.
 [[&gt; Go to your bedroom-&gt;Fernando Bedroom]]
 [[&gt; Go to your father&#39;s bedroom-&gt;Father Bedroom]]
 [[&gt; Go to the bathroom-&gt;Bathroom]]
-[[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="16" name="Fernando Bedroom" tags="" position="1825,200" size="100,100">{(replace: ?status)[
+[[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="16" name="Fernando Bedroom" tags="" position="1850,125" size="100,100">{(replace: ?status)[
     (display: &quot;UpdateTime&quot;)
 ]}
 
 You&#39;re in your bedroom.
 
-Here you sleep ig
+This is where you can sleep until tomorrow, if it is nearing night time.
+
+(link:&quot;&gt; I need my beauty sleep&quot;) [
+	(set: $fernandoWellbeing to $fernandoWellbeing + 1)
+    (go-to: &quot;Voluntary Sleeping&quot;)
+]
 
 [[&gt; Go to the living room-&gt;Living Room]]
 [[&gt; Go to the kitchen-&gt;Kitchen]]
@@ -468,7 +618,7 @@ You&#39;re in your father&#39;s bedroom.
 [[&gt; Go to the kitchen-&gt;Kitchen]]
 [[&gt; Go to your bedroom-&gt;Fernando Bedroom]]
 [[&gt; Go to the bathroom-&gt;Bathroom]]
-[[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="18" name="Bathroom" tags="" position="1625,550" size="100,100">{(replace: ?status)[
+[[&gt; Go to your father&#39;s office-&gt;Father Office]]</tw-passagedata><tw-passagedata pid="18" name="Bathroom" tags="" position="1650,625" size="100,100">{(replace: ?status)[
     (display: &quot;UpdateTime&quot;)
 ]}
 
@@ -483,13 +633,15 @@ You&#39;re in the bathroom. Here you can take a shower if you&#39;re feeling dir
         &quot;Bathe Dad&quot;
     )
 ]}
+[[&gt; Take Shower: ($convertToTime: $freeTasks&#39;s &quot;Take Shower&quot;)-&gt;Self Shower]]
+
 
 &#39;&#39;Navigation&#39;&#39;
 [[&gt; Go to the living room-&gt;Living Room]]
 [[&gt; Go to the kitchen-&gt;Kitchen]]
 [[&gt; Go to your bedroom-&gt;Fernando Bedroom]]
 [[&gt; Go to your father&#39;s office-&gt;Father Office]]
-[[&gt; Go to your father&#39;s bedroom-&gt;Father Bedroom]]</tw-passagedata><tw-passagedata pid="19" name="Father Office" tags="" position="1825,550" size="100,100">{(replace: ?status)[
+[[&gt; Go to your father&#39;s bedroom-&gt;Father Bedroom]]</tw-passagedata><tw-passagedata pid="19" name="Father Office" tags="" position="1800,625" size="100,100">{(replace: ?status)[
     (display: &quot;UpdateTime&quot;)
 ]}
 
@@ -498,13 +650,14 @@ You&#39;re in your father&#39;s office.
 There is nothing to do here, except admire your father&#39;s accomplishments.
 
 &#39;&#39;Actions&#39;&#39;
+[[&gt; Examine old cases-&gt;Examine Cases]]
 
 &#39;&#39;Navigation&#39;&#39;
 [[&gt; Go to the living room-&gt;Living Room]]
 [[&gt; Go to the kitchen-&gt;Kitchen]]
 [[&gt; Go to your bedroom-&gt;Fernando Bedroom]]
 [[&gt; Go to the bathroom-&gt;Bathroom]]
-[[&gt; Go to your father&#39;s bedroom-&gt;Father Bedroom]]</tw-passagedata><tw-passagedata pid="20" name="Afonzo Unwell Begin" tags="" position="1400,700" size="100,100">&lt;!-- Reaching this passage means Afonzo&#39;s wellbeing is 0 --&gt;</tw-passagedata><tw-passagedata pid="21" name="Fernando Unwell Begin" tags="" position="1200,700" size="100,100">&lt;!-- Reaching this passage means Fernando&#39;s wellbeing is 0 --&gt;</tw-passagedata><tw-passagedata pid="22" name="Good Ending" tags="" position="1300,700" size="100,100">&lt;!-- Reaching this passage means both Afonzo and Fernando are well after X days --&gt;</tw-passagedata><tw-passagedata pid="23" name="Bathe Dad" tags="" position="1625,675" size="100,100">&lt;!-- 
+[[&gt; Go to your father&#39;s bedroom-&gt;Father Bedroom]]</tw-passagedata><tw-passagedata pid="20" name="Afonzo Unwell Begin" tags="" position="1500,700" size="100,100">&lt;!-- Reaching this passage means Afonzo&#39;s wellbeing is 0 --&gt;</tw-passagedata><tw-passagedata pid="21" name="Fernando Unwell Begin" tags="" position="1200,700" size="100,100">&lt;!-- Reaching this passage means Fernando&#39;s wellbeing is 0 --&gt;</tw-passagedata><tw-passagedata pid="22" name="Good Ending" tags="" position="1350,700" size="100,100">&lt;!-- Reaching this passage means both Afonzo and Fernando are well after X days --&gt;</tw-passagedata><tw-passagedata pid="23" name="Bathe Dad" tags="" position="1650,750" size="100,100">&lt;!-- 
 Order of events:
 	1. Check whether task is being done in correct time (with 2 time units (30 minutes) leeway)
     	1.1. If task is being performed in the correct timing, provide ++ Afonzo, + Fernando
@@ -564,13 +717,13 @@ For a while, the world stops, and you have a great time. You forget that you nee
 
 (link: &quot;&gt; Time to stop.&quot;)[
     ($computeRandoms: &quot;Living Room&quot;)
-]}</tw-passagedata><tw-passagedata pid="25" name="ContinueLink" tags="" position="1225,500" size="100,100">{
+]}</tw-passagedata><tw-passagedata pid="25" name="ContinueLink" tags="" position="1200,500" size="100,100">{
 (link: _textToContinue&#39;s (_numberOfContinues + 1))[
     (set: _actualTime to
         ($computeActualTime: $freeTasks&#39;s &quot;Play Games&quot;)
-        + (random: 0, 3) * _numberOfContinues
+        + (random: 0, _numberOfContinues)
     )
-	(if: _numberOfContinues % 2 is 1)[(set: $fernandoWellbeing to $fernandoWellbeing + 1)]
+	(set: $fernandoWellbeing to $fernandoWellbeing + 1)
     (set: _numberOfContinues to _numberOfContinues + 1)
     (set: $time to $time + _actualTime)
     (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _actualTime)
@@ -589,7 +742,7 @@ For a while, the world stops, and you have a great time. You forget that you nee
         ]
     ]
 ]
-}</tw-passagedata><tw-passagedata pid="26" name="Time To Sleep" tags="" position="1825,50" size="100,100">You see the time, and you notice it&#39;s a tiny bit past your bed time. You depart for bed and get ready for a new day.
+}</tw-passagedata><tw-passagedata pid="26" name="Time To Sleep" tags="" position="1850,0" size="100,100">You see the time, and you notice it&#39;s a tiny bit past your bed time. You depart for bed and get ready for a new day.
 
 &lt;!-- 
 Here should show day stats before continuing
@@ -645,6 +798,7 @@ How are you doing?
     (set: $tasksNotCompletedDay to 6)
     (set: $timeSpentHelpingDay to 0)
     (set: $timeSpentOnSelfDay to 0)
+    (go-to: &quot;Fernando Bedroom&quot;)
 ]</tw-passagedata><tw-passagedata pid="27" name="Wake Up Dad" tags="" position="2100,375" size="100,100">You wake him up. Rude af.
 
 (link: &quot;&gt; The hardest choices require the strongest wills&quot;) [
@@ -671,7 +825,7 @@ How are you doing?
     (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Father Bedroom&quot;)
-]</tw-passagedata><tw-passagedata pid="28" name="Make Meal Dad" tags="" position="1625,50" size="100,100">You cook some prision aah food for your father
+]</tw-passagedata><tw-passagedata pid="28" name="Make Meal Dad" tags="" position="1650,0" size="100,100">You cook some prision aah food for your father
 
 (link: &quot;&gt; That or starve&quot;) [
 	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Make meals&quot;))
@@ -697,7 +851,7 @@ How are you doing?
     (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Kitchen&quot;)
-]</tw-passagedata><tw-passagedata pid="29" name="Lunch with Dad" tags="" position="1475,200" size="100,100">You and your family enjoy a nice lunch.
+]</tw-passagedata><tw-passagedata pid="29" name="Lunch with Dad" tags="" position="1500,125" size="100,100">You and your family enjoy a nice lunch.
 
 (link: &quot;&gt; What a pleasant meal.&quot;) [
 	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Have lunch with Dad&quot;))
@@ -723,7 +877,7 @@ How are you doing?
     (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnTask)
     (set: $currentTask to $currentTask + 1)
     ($computeRandoms: &quot;Kitchen&quot;)
-]</tw-passagedata><tw-passagedata pid="30" name="Walk with Dad" tags="" position="1350,200" size="100,100">You go for a walk with your father. You enjoy it a lot. He is tired but he had a great time.
+]</tw-passagedata><tw-passagedata pid="30" name="Walk with Dad" tags="" position="1350,125" size="100,100">You go for a walk with your father. You enjoy it a lot. He is tired but he had a great time.
 
 (link: &quot;&gt; What a pleasant meal.&quot;) [
 	(set: _timeSpentOnTask to ($computeActualTime: $normalTasks&#39;s &quot;Walk with Dad&quot;))
@@ -759,6 +913,112 @@ How are you doing?
   (set: $time to $time + _timeSpentOnGroceries)
   (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _timeSpentOnGroceries)
   (go-to: &quot;Living Room&quot;)
+]</tw-passagedata><tw-passagedata pid="32" name="Self Shower" tags="" position="1800,750" size="100,100">You take some time for yourself, to improve your hygiene. You turn on the hot water, and let the water run down your body. It feels nice to have some time for yourself. After you take your shower, you clean yourself up, and continue charging on.
+
+(link: &quot;&gt; That was nice.&quot;) [
+    (set: $fernandoWellbeing to $fernandoWellbeing + 1)
+    (set: _timeSpentOnShower to ($computeActualTime: $normalTasks&#39;s &quot;Take Shower&quot;))
+    (set: $time to $time + _timeSpentOnShower)
+    (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _timeSpentOnShower)
+    (go-to: &quot;Bathroom&quot;)
+    ]</tw-passagedata><tw-passagedata pid="33" name="Play Game With Father" tags="" position="1350,250" size="100,100">You invite your Dad to play a simple board game. In the state he is in, the game is barely enough to keep you engaged, but he is happy, so you&#39;re happy for him also. You celebrate his victories, and console his shortcomings. In the end, you&#39;re a bit more exhausted.
+
+(link: &quot;&gt; He is a little bit happier!&quot;) [
+	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
+    (set: $fernandoWellbeing to $fernandoWellbeing - 1)
+    (set: _timeSpentOnGame to ($computeActualTime: $normalTasks&#39;s &quot;Play with Dad&quot;))
+    (set: $time to $time + _timeSpentOnGame)
+    (set: $timeSpentHelpingDay to $timeSpentHelpingDay + _timeSpentOnGame)
+    ($computeRandoms: &quot;Living Room&quot;)
+]</tw-passagedata><tw-passagedata pid="34" name="Examine Bookshelves" tags="" position="1500,250" size="100,100">{
+(set: _fullText to &quot;You look at the bookshelves. Great in their majesty. There&#39;s a bit of dust on the very top shelves, probably because what\&#39;s in there is so old so that it hasn\&#39;t been touched in years. You scan the contents of the bookshelves. A green book, titled \&quot;How to lose track of time\&quot;, with red bold letters, jumps to your view. A different book, next to it, blue cover, but with golden stripes to the side: \&quot;Is time passing by faster than you think?\&quot;. You think to yourself: these titles are very specific. Should you be worried about the time? Some tasks you should be doing? You\&#39;re stuck in a trance, watching all these books that give no hints, yet you are fascinated by them. As time passes by, some of your responsibilities fade away. The longer you stay here, the longer you feel at peace. Who needs your help? You need your help. You need only help yourself. But, you think, that will weigh on your conscience. Perhaps it is not too late to start taking action and helping those in need. But you digress. You could just continue look at these interesting books, with no care in the world for the time and all the tasks you left undone.&quot;)
+
+(set: _pos to 1)
+}
+|output&gt;[]
+[[&gt; Stop Examining Bookshelf-&gt;Living Room]] 
+(live: 100ms)[
+  (append: ?output)[(print: _fullText&#39;s _pos)]
+  (set: _pos to it + 1)
+  (set: $time to $time + _pos / 150000)
+  (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _pos / 150000)
+  (if: _pos &gt; _fullText&#39;s length)[
+  	(stop:)
+    (set: $fernandoWellbeing to $fernandoWellbeing + 1)
+    ]
+]</tw-passagedata><tw-passagedata pid="35" name="Examine Cases" tags="" position="1925,625" size="100,100">{
+(set: _fullText to &quot;Staring at Afonzo&#39;s desk, who once was a legendary detective, you can see his most recent cases, before the diagnostic. For a while, he continued living his life, but more cases were slipping away, and eventually he had to retire. Some of these cases you notice, aren&#39;t even real. Every day, your father struggles with his mind. This doesn&#39;t give you joy. However, as you continue looking, you see some of his great cases. The most prominent, uncovering a secret cult, called La Mancha, who had the city in the palm of their hands. Apparently, you read, their leader ran away for a long while, but Afonzo caught him hiding in the Bayshore Docks, which Afonzo mentions every day when he talks with you; you&#39;re very familiar with the area, and once in a while, he wants to return there, to revisit his greatest achievement. Of course, now, it is filled with wonderous colors and incredible sights, but before, it was decrepit and a prime place for crime. Anyways, you digress. In his youth, Afonzo seemed to be working for the police, like you, but he strayed away from that path, taking on a more private approach. Some of these cases are remarkable, and the solves he comes up with, you realize you could never in a million years. But now, with his mind falling apart, he will never be who he once was - in fact, he already isn&#39;t. You&#39;re sad by what has become, but you&#39;re happy that he lived such a life, and you know he&#39;d be happy too.&quot;)
+
+(set: _pos to 1)
+}
+|output&gt;[]
+[[&gt; Stop Examining Cases-&gt;Father Office]] 
+(live: 100ms)[
+  (append: ?output)[(print: _fullText&#39;s _pos)]
+  (set: _pos to it + 1)
+  (set: $time to $time + _pos / 100000)
+  (set: $timeSpentOnSelfDay to $timeSpentOnSelfDay + _pos / 100000)
+  (if: _pos &gt; _fullText&#39;s length)[
+  	(stop:)
+    (set: $fernandoWellbeing to $fernandoWellbeing + 1)
+    ]
+]</tw-passagedata><tw-passagedata pid="36" name="Voluntary Sleeping" tags="" position="2000,125" size="100,100">You go to bed, giving yourself a bit more rest than other days. Being well-rested is important to be able to take care of others.
+
+&lt;!-- 
+Here should show day stats before continuing
+
+1. Show each person&#39;s stats maybe?
+2. Show if schedule was followed?
+3. Print some text that shows how you&#39;re doing?
+--&gt;
+
+{
+(set: $tasksCompletedOnTimeTotal to $tasksCompletedOnTimeTotal + $tasksCompletedOnTimeDay)
+(set: $tasksCompletedAlmostOnTimeTotal to $tasksCompletedAlmostOnTimeTotal + $tasksCompletedAlmostOnTimeDay)
+(set: $tasksCompletedLateTotal to $tasksCompletedLateTotal + $tasksCompletedLateDay)
+(set: $tasksNotCompletedTotal to $tasksNotCompletedTotal + $tasksNotCompletedDay)
+(set: $timeSpentHelpingTotal to $timeSpentHelpingTotal + $timeSpentHelpingDay)
+(set: $timeSpentOnSelfTotal to $timeSpentOnSelfTotal + $timeSpentOnSelfDay)
+
+(set: $afonzoWellbeing to $afonzoWellbeing - (3 * $tasksNotCompletedDay))
+(set: $fernandoWellbeing to $fernandoWellbeing - (4 * $tasksNotCompletedDay))
+}
+
+Day accomplishments:
+
+* Tasks completed on time: $tasksCompletedOnTimeDay
+* Tasks somewhat completed on time: $tasksCompletedAlmostOnTimeDay
+* Tasks not completed on time: $tasksCompletedLateDay
+* Tasks not completed: $tasksNotCompletedDay
+* Time spent helping your father: ($convertToTime: $timeSpentHelpingDay)
+* Time spent on yourself: ($convertToTime: $timeSpentOnSelfDay)
+
+Total accomplishments:
+
+* Tasks completed on time: $tasksCompletedOnTimeTotal
+* Tasks somewhat completed on time: $tasksCompletedAlmostOnTimeTotal
+* Tasks not completed on time: $tasksCompletedLateTotal
+* Tasks not completed: $tasksNotCompletedDay
+* Time spent helping your father: ($convertToTime: $timeSpentHelpingTotal)
+* Time spent on yourself: ($convertToTime: $timeSpentOnSelfTotal)
+
+How are you doing?
+
+* Your sleep quality has been good
+* Your hygiene has been good
+* You have been feeding yourself well
+* You have entretained yourself
+
+&lt;!-- Punishment: the least well Fernando is, the later he wakes up --&gt;
+(link: &quot;&gt; A new day approaches.&quot;) [
+	(set: $time to (floor: $time + ($convertMinutesToTime: 540 + (10 - $fernandoWellbeing) * 15)))
+    (set: $tasksCompletedOnTimeDay to 0)
+    (set: $tasksCompletedAlmostOnTimeDay to 0)
+    (set: $tasksCompletedLateDay to 0)
+    (set: $tasksNotCompletedDay to 6)
+    (set: $timeSpentHelpingDay to 0)
+    (set: $timeSpentOnSelfDay to 0)
+    (go-to: &quot;Fernando Bedroom&quot;)
 ]</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
