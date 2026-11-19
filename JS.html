@@ -1184,7 +1184,422 @@ He looks at you. Then he looks around. He seems very confused. His view of the w
 
 [[&gt; Look at my father... so happy!-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="42" name="Go Outside Now 2" tags="" position="775,700" size="100,100">You go for the walk, and altough you have to walk very slowly, and many times had to stop, it was nice. A nice breath of fresh air. However, ironically, it made you more exhausted, and you had to rest for a while...
 
-[[&gt; It was worth it though...-&gt;Living Room]] </tw-passagedata></tw-storydata>
+[[&gt; It was worth it though...-&gt;Living Room]] </tw-passagedata><tw-passagedata pid="43" name="Afonzo Unwell Begin" tags="" position="1150,975" size="100,100">
+&lt;!-- Reaching this passage means Afonzo&#39;s wellbeing is 0 --&gt;
+{
+(set: $wrongSearches to 0)
+(set: $searchedCourt to false)
+(set: $searchedPark to false)
+(set: $searchedCosmetics to false)
+(set: $searchedStation to false)
+(set: $searchedSquare to false)
+}
+
+&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/Bad%20Ending%20-%20Murder%20Stopped/1_Cutscene_Fernando_Preocupado.png&quot;&gt;
+
+You walk into the living room, expecting to find your father sitting in his usual chair, but the room is empty.
+
+&quot;Dad?&quot; you call out. There&#39;s no answer.
+
+You search his bedroom, the kitchen, and the bathroom, but he&#39;s nowhere to be found. As you return to the living room, you notice that the front door is unlocked, and your heart begins to race.
+
+With his Alzheimer&#39;s, your father sometimes becomes confused and wanders away from home. You know how dangerous it could be for him to be outside alone, especially at this hour.
+
+You grab your phone and rush out of the house, desperately looking for any sign of him. You need to find him before something happens.
+
+[[Start searching-&gt;Afonzo Search]]
+</tw-passagedata><tw-passagedata pid="44" name="Fernando Unwell Begin" tags="" position="1025,1525" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Default%20Screens/Default_Afonzo_Bedroom.png&quot;&gt;
+
+&lt;!-- Reaching this passage means Fernando&#39;s wellbeing is 0 --&gt;
+You wake up feeling unusually tired.
+
+Your body aches, and even getting out of bed feels more difficult than it should.
+
+Between taking care of your father, managing the house, and keeping up with everything else, you&#39;ve been pushing yourself harder than ever.
+
+You tell yourself it&#39;s probably just exhaustion.
+
+What do you do?
+
+[[Ignore the symptoms. There&#39;s too much to do.-&gt;Fernando Unwell Progression]]
+
+[[Try to get some rest.-&gt;Fernando Unwell Rest]]
+
+[[Make an appointment with a doctor.-&gt;Fernando Unwell Doctor]]</tw-passagedata><tw-passagedata pid="45" name="Good Ending Begin" tags="" position="1150,1225" size="100,100">&lt;!-- Reaching this passage means both Afonzo and Fernando are well after X days --&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/True%20Ending/1_Cutscene_Happy_Couch.png&quot;&gt;
+
+It&#39;s a quiet Sunday afternoon, and you&#39;re spending some time with your father in the living room. Over the past few months, you&#39;ve managed to establish a routine that works for both of you. There are still difficult days, but you&#39;ve learned to balance his needs with your own wellbeing.
+
+Your father looks at you and smiles.
+
+&quot;It&#39;s nice having you here, Fernando.&quot;
+
+You smile back, happy to see him enjoying himself. Although his Alzheimer&#39;s sometimes makes conversations difficult, you&#39;ve learned that you don&#39;t always need words to share meaningful moments together.
+
+What would you like to do?
+
+[[Stay and enjoy the peaceful afternoon together.-&gt;Good Ending Together]]
+
+[[Suggest watching something on television together.-&gt;Good Ending Together]]
+</tw-passagedata><tw-passagedata pid="46" name="Fernando Unwell Progression" tags="" position="1250,1525" size="100,100">Several days pass.
+
+Despite your efforts, you don&#39;t seem to be getting any better.
+
+Your body feels heavy. Simple tasks leave you exhausted, and no matter what you do, the fatigue never seems to go away.
+
+One afternoon, while you&#39;re in your bed, you hear your father calling from his office.
+
+&quot;Fernando? Can you come here? I need some help.&quot;
+
+You try to stand, but your legs feel weak.
+
+What do you do?
+
+[[Get up and help him.-&gt;Fernando Unwell Father]]
+
+[[Ask him to wait a moment.-&gt;Fernando Unwell Father]]
+</tw-passagedata><tw-passagedata pid="47" name="Fernando Unwell Rest" tags="" position="1150,1650" size="100,100">You decide to take the morning off and get some much-needed rest.
+
+But it doesn&#39;t last long.
+
+Your father calls for you from the other room. He needs help getting ready, and there&#39;s nobody else around.
+
+You get up, ignoring the dizziness that hits you as you stand.
+
+By the end of the day, you feel even worse than before.
+
+[[Continue-&gt;Fernando Unwell Progression]]
+</tw-passagedata><tw-passagedata pid="48" name="Fernando Unwell Doctor" tags="" position="1150,1400" size="100,100">You manage to schedule a doctor&#39;s appointment.
+
+After hearing about your symptoms and your daily routine, the doctor expresses concern about your physical and emotional exhaustion.
+
+You&#39;re advised to rest, reduce your responsibilities, and take better care of your own health.
+
+You leave with some medication to help manage your symptoms, but one question stays in your mind:
+
+How are you supposed to rest when your father depends on you for almost everything?
+
+[[Continue-&gt;Fernando Unwell Progression]]
+</tw-passagedata><tw-passagedata pid="49" name="Fernando Unwell Father" tags="" position="1425,1525" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Default%20Screens/Default_Office.png&quot;&gt;
+
+You make your way to your father&#39;s office.
+
+He&#39;s struggling to get up from his chair.
+
+&quot;Help me get up, will you, my boy?&quot;
+
+You reach out to help him, but as you try to support his weight, a sudden wave of dizziness forces you to stop.
+
+You stop beside him, breathing heavily.
+
+&quot;Are you alright, Fernando?&quot; he asks.
+
+You look at him. For once, he&#39;s the one worrying about you.
+
+[[Try to help him again.-&gt;Fernando Unwell Attempt]]
+
+[[Admit that you can&#39;t do it.-&gt;Fernando Unwell Decision]]
+</tw-passagedata><tw-passagedata pid="50" name="Fernando Unwell Attempt" tags="" position="1600,1425" size="100,100">You try to help him again, but your body refuses to cooperate.
+
+Your legs tremble, and you can&#39;t help him get up.
+
+Your father gently places a hand on your shoulder.
+
+&quot;It&#39;s alright, son. Don&#39;t push yourself.&quot;
+
+You realize that no matter how much you want to help him, your own health is making it impossible.
+
+[[Continue-&gt;Fernando Unwell Decision]]
+</tw-passagedata><tw-passagedata pid="51" name="Fernando Unwell Decision" tags="" position="1775,1550" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/Ending%20-%20Fernando%20Burnout/1_Cutscene_Burnout_Bedroom.png&quot;&gt;
+
+That evening, you lie down in your bed, while thinking about everything that&#39;s happened over the past few months.
+
+You&#39;ve given your father everything you could. Your time, your energy, and now, it seems, your own health.
+
+But love alone isn&#39;t enough to provide the care he needs and you realize something you&#39;ve been avoiding for a long time
+
+You can&#39;t keep doing this on your own.
+
+After discussing the situation with your father, you begin looking for a care facility where he can receive proper support.
+
+It&#39;s one of the hardest decisions you&#39;ve ever made...
+
+[[Continue-&gt;Fernando Unwell Ending]]
+</tw-passagedata><tw-passagedata pid="52" name="Fernando Unwell Ending" tags="" position="1975,1550" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/Ending%20-%20Fernando%20Burnout/2_Cutscene_Care_Centre.png&quot;&gt;
+
+A few weeks later, your father moves into a residential care facility, where he can receive the specialized support he needs. You visit him whenever you can, spending time together and making sure he feels loved and supported.
+
+For the first time in months, you finally have the opportunity to focus on your own recovery. Your health gradually begins to improve, and everyday tasks no longer feel as overwhelming as they once did. Yet, despite these improvements, something still doesn&#39;t feel right.
+
+Every time you leave the care facility after visiting your father, a familiar feeling follows you home: guilt. You can&#39;t help wondering whether you could have done more, whether you should have recognized your own limits sooner, or whether things might have turned out differently if you had asked for help earlier.
+
+Deep down, you know your father is receiving the care and attention he needs. You also understand that continuing to care for him alone would have put both of you at risk. But knowing you made a responsible decision doesn&#39;t make it any easier to live with.
+
+You still wish you could have been there for him the way you once were. And as you slowly begin to rebuild your own life, you realize how much of yourself you neglected along the way.
+
+You spent so long trying to take care of your father that, somewhere along the way, you forgot to take care of yourself.
+
+**THE END**
+
+(print:&quot;(Hint: Whenever you don&#39;t need to perform tasks to help Afonzo, try to do things that focus on having some alone time, and make sure to take care of your hygiene as well, and try to not go bankrupt!)&quot;)
+
+(link: &quot;&gt; Play Again&quot;) [
+	(restart:)
+]</tw-passagedata><tw-passagedata pid="53" name="Good Ending Together" tags="" position="1350,1225" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/True%20Ending/1_Cutscene_Happy_Couch.png&quot;&gt;
+
+Weeks turn into months, and your father&#39;s Alzheimer&#39;s continues to progress, bringing new challenges into your daily lives. Some days, he struggles to find the right words, while on others, he becomes confused by familiar places or everyday situations.
+
+Despite these difficulties, you still find ways to enjoy your time together. Whether you&#39;re watching television, sharing meals, or simply sitting in each other&#39;s company, you&#39;ve learned to appreciate the small moments that bring him happiness.
+
+You&#39;ve also learned that being a good caregiver doesn&#39;t mean doing everything alone. By accepting help when you need it, you&#39;ve managed to support your father while still making time for your own needs and wellbeing.
+
+Not every day is easy, and you know there will be more challenges ahead. But looking at your father and seeing him smile reminds you why these moments are worth cherishing.
+
+[[Continue-&gt;Good Ending Goodbye]]
+</tw-passagedata><tw-passagedata pid="54" name="Good Ending Goodbye" tags="" position="1525,1225" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/True%20Ending/2_Cutscene_Afonzo_Death.png&quot;&gt;
+
+As time passes, your father&#39;s health becomes increasingly fragile. He spends more time resting in bed, and conversations become shorter and less frequent. Despite his declining condition, you continue to spend as much time with him as possible, making sure he feels comfortable and cared for.
+
+One afternoon, you sit beside his bed. He looks at you quietly before slowly reaching out his hand, and you gently take it in yours. He doesn&#39;t say anything, but his expression softens, and he seems more relaxed with you by his side.
+
+You remain there for a while, holding his hand and offering quiet reassurance. Even without exchanging words, you feel grateful to be able to share this peaceful moment with him.
+
+[[Continue-&gt;Good Ending Progression]]
+
+</tw-passagedata><tw-passagedata pid="55" name="Good Ending Progression" tags="" position="1675,1225" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/True%20Ending/2_Cutscene_Afonzo_Death.png&quot;&gt;
+
+In the days that follow, his condition continues to decline.
+
+Eventually, your father passes away peacefully.
+
+Even though you knew this day would come, saying goodbye is harder than you ever imagined.
+
+[[Continue-&gt;Good Ending]]</tw-passagedata><tw-passagedata pid="56" name="Good Ending" tags="" position="1850,1225" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Default%20Screens/Default_Living_Room.png&quot;&gt;
+
+Months have passed since your father&#39;s death, and life has slowly begun to move forward. Although you still miss him deeply, looking back on the time you spent together brings you comfort rather than regret.
+
+You remember the peaceful afternoons in the living room, the smiles you shared, and the moments when simply being by his side was enough. Alzheimer&#39;s changed many things about your father, but it never changed how much he meant to you.
+
+Caring for him wasn&#39;t always easy. There were difficult days, moments of uncertainty, and challenges you never expected to face. But through it all, you learned to support him while also taking care of your own wellbeing.
+
+You couldn&#39;t stop his illness or prevent the day you would eventually have to say goodbye. What you could do was make sure he felt loved, safe, and cared for, even during his most difficult moments.
+
+As you continue living your life, you carry those experiences with you. You know you did everything you reasonably could, and although the sadness of losing him will never completely disappear, it no longer overshadows the happiness you shared.
+
+You look back on your time together not with regret, but with gratitude, knowing that you were there for him when he needed you most.
+
+**THE END**
+(print:&quot;Congratulations! Caring for an Alzheimer patient is a difficult task, and carers often neglect their own health. Good job for being able to balance care with your own health!&quot;)
+
+(link: &quot;&gt; Play Again&quot;) [
+	(restart:)
+]</tw-passagedata><tw-passagedata pid="57" name="Afonzo Search" tags="" position="1400,950" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/Bad%20Ending%20-%20Murder%20Stopped/2_Cutscene_Fernando_Rua_Noite.png&quot;&gt;
+
+{
+(if: $wrongSearches is 0)[
+The streets are quiet, and the rain is starting to fall. You look around, trying to think of where your father might have gone. Where should you search first?
+]
+(if: $wrongSearches is 1)[
+You still haven&#39;t found your father. The rain is getting heavier, and you&#39;re beginning to panic. Every minute that passes makes you more worried about his safety.
+
+You need to think carefully about where to look next.
+]
+(if: $wrongSearches is 2)[
+You&#39;ve already searched two locations without finding him. Your phone is wet from the rain, and your hands are trembling as you look around the deserted streets.
+
+What if something has happened to him? You try to push the thought aside and focus on finding him.
+]
+(if: $wrongSearches &gt; 2)[
+Time keeps slipping away, and there&#39;s still no sign of your father. You&#39;re exhausted, soaked from the rain, and terrified of what you might find.
+
+You can&#39;t give up now. There must be somewhere you haven&#39;t searched yet.
+]
+}
+
+Where do you go?
+
+{
+(if: $searchedCourt is false)[&lt;div&gt;[[El Court Americano-&gt;Search Court]]&lt;/div&gt;]
+(if: $searchedPark is false)[&lt;div&gt;[[Daniel Louis-Campbell Park-&gt;Search Park]]&lt;/div&gt;]
+(if: $searchedCosmetics is false)[&lt;div&gt;[[Marvin Clam Cosmetics-&gt;Search Cosmetics]]&lt;/div&gt;]
+&lt;div&gt;[[The Bayshore Docks-&gt;Search Bayshore]]&lt;/div&gt;
+(if: $searchedStation is false)[&lt;div&gt;[[Harborview Bus Station-&gt;Search Station]]&lt;/div&gt;]
+(if: $searchedSquare is false)[&lt;div&gt;[[Old Town Square-&gt;Search Square]]&lt;/div&gt;]
+}
+</tw-passagedata><tw-passagedata pid="58" name="Search Court" tags="" position="1300,825" size="100,100">{
+(set: $wrongSearches to $wrongSearches + 1)
+(set: $searchedCourt to true)
+}
+You rush towards El Court Americano, hoping to find your father somewhere nearby. You search the entrance and the surrounding streets, carefully looking at everyone who passes by.
+
+&quot;Dad! Afonzo!&quot; you call out, but there&#39;s no response.
+
+You check your phone, hoping someone might have contacted you with information about his whereabouts, but there are no missed calls or messages.
+
+Your father is nowhere to be found, and with every passing minute, your anxiety grows. You can&#39;t afford to waste any more time here.
+
+[[Search somewhere else-&gt;Afonzo Search]]
+</tw-passagedata><tw-passagedata pid="59" name="Search Park" tags="" position="1475,825" size="100,100">{
+(set: $wrongSearches to $wrongSearches + 1)
+(set: $searchedPark to true)
+}
+You arrive at Daniel Louis-Campbell Park, hoping your father might have wandered there. The pathways are almost deserted, and the rain makes it difficult to see clearly.
+
+You hurry through the park, checking the benches and scanning the area for any sign of him. Suddenly, you notice someone sitting beneath a tree in the distance. For a moment, you feel a wave of relief and rush towards them.
+
+But as you get closer, you realize it isn&#39;t your father.
+
+Your heart sinks. You&#39;ve wasted more precious time, and you still have no idea where he could be.
+
+[[Search somewhere else-&gt;Afonzo Search]]
+</tw-passagedata><tw-passagedata pid="60" name="Search Cosmetics" tags="" position="1600,875" size="100,100">{
+(set: $wrongSearches to $wrongSearches + 1)
+(set: $searchedCosmetics to true)
+}
+You arrive outside Marvin Clam Cosmetics, hoping to find some sign of your father. The shop is already closed, and the surrounding streets are almost completely deserted.
+
+You look through the windows and search the nearby area, but there&#39;s no sign of him. Desperate for any information, you try calling his phone again, only to hear it ringing without an answer.
+
+With no other clues to follow, you realize there&#39;s nothing more you can do here. Every passing minute increases your anxiety, and you know you need to keep moving.
+
+[[Search somewhere else-&gt;Afonzo Search]]</tw-passagedata><tw-passagedata pid="61" name="Search Bayshore" tags="" position="1750,1000" size="100,100">You finally arrive at The Bayshore Docks. The rain is pouring down, and the strong winds make it difficult to see clearly as you desperately search the waterfront for your father.
+
+Suddenly, you notice a familiar figure in the distance. You squint through the rain, trying to get a better look, and your heart skips a beat as you recognize him.
+
+&quot;DAD!&quot; you shout, immediately running towards him as fast as you can.
+
+{
+(if: $wrongSearches &lt;= 2)[
+As you get closer, you notice that your father isn&#39;t alone. He appears to be arguing with someone, and you can hear the anger in his voice.
+
+Your heart pounds as you realize the situation could quickly become dangerous. You pick up your pace, determined to reach him before anything happens.
+
+&lt;div&gt;[[Continue-&gt;Afonzo Found In Time]]&lt;/div&gt;
+]
+(if: $wrongSearches &gt; 2)[
+As you approach, you notice someone lying motionless on the ground near your father. Your stomach drops, and a terrible feeling washes over you.
+
+You rush forward, terrified of what you might discover.
+
+&lt;div&gt;[[Continue-&gt;Afonzo Found Too Late]]&lt;/div&gt;
+]
+}</tw-passagedata><tw-passagedata pid="62" name="Search Station" tags="" position="1525,1050" size="100,100">{
+(set: $wrongSearches to $wrongSearches + 1)
+(set: $searchedStation to true)
+}
+You hurry towards Harborview Bus Station, wondering if your father might have become confused and tried to take a bus somewhere. The rain continues to pour as you approach the station, hoping to spot him among the people waiting.
+
+You search the waiting area and the surrounding streets, carefully checking every face. A few people are standing beneath the shelter, but none of them is your father.
+
+Your anxiety continues to grow as you realize you&#39;ve reached another dead end. You try to think of somewhere else he could have gone, knowing that the longer he&#39;s missing, the greater the risk to his safety.
+
+[[Search somewhere else-&gt;Afonzo Search]]</tw-passagedata><tw-passagedata pid="63" name="Search Square" tags="" position="1375,1075" size="100,100">{
+(set: $wrongSearches to $wrongSearches + 1)
+(set: $searchedSquare to true)
+}
+You arrive at Old Town Square, where the rain has driven almost everyone indoors. The square is nearly deserted, but you search the benches and surrounding streets, hoping to find some sign of your father.
+
+&quot;Dad! Afonzo!&quot; you shout, your voice echoing through the empty square.
+
+You wait for a response, but there&#39;s only the sound of rain hitting the pavement. Exhausted and increasingly worried, you stop for a moment to catch your breath and consider where else he might have gone.
+
+You&#39;re running out of places to search, but giving up isn&#39;t an option.
+
+[[Search somewhere else-&gt;Afonzo Search]]</tw-passagedata><tw-passagedata pid="64" name="Afonzo Found In Time" tags="" position="2025,900" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/Bad%20Ending%20-%20Murder%20Stopped/3_Cutscene_Cais.png&quot;&gt;
+
+You rush towards your father, calling out his name.
+
+&quot;Dad! Afonzo!&quot;
+
+As you get closer, you notice him confronting a stranger near the docks. The man looks terrified, and you quickly realize why: your father is pointing a gun at him.
+
+&quot;You&#39;re not getting away this time!&quot; your father shouts.
+
+Suddenly, you remember the news report about the legendary detective Afonzo Sapienze. Your father. The final confrontation with the criminal organization he brought down happened right here, at The Bayshore Docks.
+
+It becomes clear that he&#39;s confusing the present with a moment from his past, believing he&#39;s back in the middle of that investigation.
+
+&quot;Dad, it&#39;s me! Fernando!&quot; you shout, trying to get his attention.
+
+He turns towards you, visibly confused.
+
+&quot;Fernando? Stay back! I&#39;ve almost got him!&quot;
+
+You approach carefully, trying to remain calm. &quot;Dad, listen to me. It&#39;s over. You already caught them. You won.&quot;
+
+Your father hesitates, looking between you and the frightened stranger.
+
+&quot;You mean... it&#39;s over?&quot; he asks.
+
+&quot;Yes, Dad. It&#39;s over. Let&#39;s go home.&quot;
+
+For a moment, he remains still. Then, slowly, he lowers the gun, allowing the stranger to move away.
+
+You feel an overwhelming sense of relief as you realize you&#39;ve managed to prevent something terrible from happening. Still, the thought of how differently things could have ended sends a chill down your spine.
+
+[[Continue-&gt;Afonzo Care With Family]]</tw-passagedata><tw-passagedata pid="65" name="Afonzo Found Too Late" tags="" position="2025,1075" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/Worst%20Ending%20-%20Murder%20Happened/3_Cutscene_Cais.png&quot;&gt;
+
+You finally arrive at The Bayshore Docks, desperately searching for your father as the rain pours down around you. Suddenly, a gunshot echoes through the docks, and you immediately start running towards the sound.
+
+&quot;DAD!&quot; you shout, hoping he can hear you.
+
+As you get closer, you see your father standing beside someone lying motionless on the ground, a gun still in his hand.
+
+&quot;Fernando? I did it. I finally caught him,&quot; your father says, looking strangely proud of himself.
+
+You freeze, struggling to understand what you&#39;re witnessing. Then, you remember the news report about the legendary detective Afonzo Sapienze. Your father. The man who brought down a criminal organization, with the final confrontation taking place right here, at The Bayshore Docks.
+
+You realize he&#39;s confusing the present with his past, believing he&#39;s reliving the investigation that once made him famous. But this time, the person lying on the ground isn&#39;t a criminal from his old case. It&#39;s an innocent stranger.
+
+You immediately call emergency services, desperately hoping there&#39;s still something that can be done. Unfortunately, by the time help arrives, it&#39;s too late. The stranger is pronounced dead.
+
+You turn towards your father, who seems confused by your reaction, unable to understand the seriousness of what has happened.
+
+&quot;I stopped him, Fernando. Why are you looking at me like that?&quot;
+
+You stand there in shock, unable to find the words to explain what he&#39;s done. You came here hoping to bring your father home safely, but instead, you&#39;ve arrived at the scene of a tragedy you couldn&#39;t prevent.
+
+You were too late.
+
+[[Continue-&gt;Afonzo Care Alone]]
+</tw-passagedata><tw-passagedata pid="66" name="Afonzo Care With Family" tags="" position="2250,900" size="100,100">After the incident at The Bayshore Docks, you realize that your father needs more support than you can safely provide at home. Following a professional assessment and discussions with your family, you arrange for him to move into a specialized care facility.
+
+The decision isn&#39;t easy. Your father was once a brilliant detective, someone who dedicated his life to protecting others. Now, he&#39;s the one who needs protection.
+
+You and your family visit him regularly, spending time together and making sure he feels loved and supported. Although he sometimes struggles to recognize familiar faces, you continue to enjoy the moments you share with him.
+
+Still, you can&#39;t stop thinking about that night at the docks. What if you had arrived just a little later? Could you have done something differently to prevent the situation from escalating?
+
+You know you managed to prevent a tragedy, but you also realize how close things came to ending differently. The thought of what could have happened continues to trouble you, even as life slowly returns to a more peaceful routine.
+
+For now, you&#39;re grateful that your father is safe and receiving the care he needs. Yet, despite that relief, a lingering sense of guilt remains. You can&#39;t help wondering whether you could have recognized the warning signs earlier and prevented the situation from happening in the first place.
+
+**THE END**
+
+(print:&quot;(Hint: Fernando&#39;s wellbeing is best managed by sticking to the routine in the schedule)&quot;)
+
+(link: &quot;&gt; Play Again&quot;) [
+	(restart:)
+]</tw-passagedata><tw-passagedata pid="67" name="Afonzo Care Alone" tags="" position="2250,1075" size="100,100">&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/joao_working_station_1/imagens/Cutscenes/Worst%20Ending%20-%20Murder%20Happened/4_Cutscene_Care_Centre.png&quot;&gt;
+
+In the weeks following the incident at The Bayshore Docks, your father undergoes medical and legal assessments. Given the seriousness of what happened and his condition, he is eventually placed in a secure care facility, where he can receive specialized care and supervision.
+
+You and your family are not allowed to visit him. The man who once dedicated his life to protecting others is now living alone, separated from the people who love him. Although you know he&#39;s receiving professional care, the thought of him being isolated from his family is heartbreaking.
+
+You often find yourself thinking about that rainy night. The empty streets, the places you searched, and all the time you lost trying to find him. You wonder what might have happened if you had remembered the news report sooner or reached the docks just a few minutes earlier.
+
+The guilt gradually begins to consume you. You withdraw from your friends and family, losing interest in activities you once enjoyed. As the weeks pass, the sadness becomes increasingly difficult to manage, and you find yourself struggling with depression, unable to stop replaying the events of that night in your mind.
+
+You couldn&#39;t save the innocent stranger, and you couldn&#39;t protect your father from the consequences of what happened. Despite knowing that his Alzheimer&#39;s played a role in the tragedy, you can&#39;t help blaming yourself for not arriving sooner.
+
+Life continues, but you struggle to move forward. The events of that night remain with you, leaving you with a painful question you may never be able to answer: could things have ended differently if you had made just one different decision?
+
+**THE END**
+(print:&quot;(Hint: Somewhere in the house, there was a hint of where Afonzo could have been... can you find it?)&quot;)
+
+(link: &quot;&gt; Play Again&quot;) [
+	(restart:)
+]</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
