@@ -228,7 +228,7 @@ He was about to take over the most difficult case he could ever have.
 {(if:$beginGame is true)[(print: &quot;The news haven&#39;t quite sunk in yet. You&#39;ve lived with your parents for about 3 weeks. Things are weird, your father is more isolated, your mother tries to be positive but she knows things aren&#39;t going very well... you know it is up to you to change things, to care for your father. But you must also look after yourself.
 
 
-&lt;i&gt;&lt;span style=&#39;color:#00FFFF&#39;&gt;Your task is to balance your own wellbeing with your father&#39;s wellbeing, while saving your money for expenses that are really needed. Do it for 5 days, and you could be happy forever. Should you fail to manage your wellbeings, something bad may happen...
+&lt;i&gt;&lt;span style=&#39;color:##e04444&#39;&gt;Your task is to balance your own wellbeing with your father&#39;s wellbeing, while saving your money for expenses that are really needed. Do it for 5 days, and you could be happy forever. Should you fail to manage your wellbeings, something bad may happen...
 
 Start by checking the schedule, to see what tasks you have for today.&lt;/span&gt;&lt;/i&gt;&quot;)]
 
@@ -436,8 +436,8 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
 
             (if: _hours &lt; 10)[0](print: _hours):(if: _minutes &lt; 10)[0](print: _minutes)
 
-            (print: &quot; | Afonzo: &quot; + (str: $afonzoWellbeing))
-            (print: &quot; | Fernando: &quot; + (str: $fernandoWellbeing))
+            (print: &quot; | Afonzo&#39;s Wellbeing: &quot; + (str: $afonzoWellbeing))
+            (print: &quot; | Fernando&#39;s Wellbeing: &quot; + (str: $fernandoWellbeing))
             (print: &quot; | Balance: &quot; + (str: $money))
         ]
     &lt;/div&gt;
@@ -472,7 +472,17 @@ Here you can check today&#39;s schedule, play some games, read a book, or examin
        ]
      ]
 ]
-}</tw-passagedata><tw-passagedata pid="9" name="Check Schedule" tags="" position="1350,375" size="100,100">{(set: _timeToClock to (macro: num-type _time, [
+}</tw-passagedata><tw-passagedata pid="9" name="Check Schedule" tags="" position="1350,375" size="100,100">(if: $checkedScheduleToday is false and $day is 1) [(print: &quot;&lt;i&gt; Your schedule is very important. When caring for someone with Alzheimer&#39;s, it&#39;s important to stick to a routine, instead of doing things at random times. You&#39;ve been able to stick with the routine so far, so it&#39;s time to continue that focus! Whenever you complete a task, come back to check the schedule and see what your next task might be. If you have some spare time between tasks, try to do something for yourself. Caring for yourself psychologically and mentally is important!
+
+The tasks will appear on the actions options whenever you&#39;re supposed to perform them.&lt;/i&gt;
+
+&lt;i&gt; If the action is colored &lt;b&gt;&lt;span style=&#39;color:GREEN&#39;&gt;green&lt;/span&gt;&lt;/b&gt;, that means it&#39;s the perfect time to perform it. Don&#39;t waste any more time! Both you and your father will be very happy.&lt;/i&gt;
+
+&lt;i&gt; If the action is colored &lt;b&gt;&lt;span style=&#39;color:YELLOW&#39;&gt;yellow&lt;/span&gt;&lt;/b&gt;, that means it&#39;s either a bit too early or a bit too late to perform this task. If you&#39;re too early, try doing something that will pass only a bit of time. Your father may still not mind if it&#39;s not far from the routine, but it will be slightly disappointing to you.&lt;/span&gt;&lt;/i&gt;
+
+&lt;i&gt; If the action is colored &lt;b&gt;&lt;span style=&#39;color:RED&#39;&gt;red&lt;/span&gt;&lt;/b&gt;, that means it&#39;s either a way too early or way too late to perform this task. If you&#39;re too early, you probably have time to do other things in between. If you perform the task while it is red, both you and your father will surely be very displeased.&lt;/span&gt;&lt;/i&gt;&quot;)]
+
+{(set: _timeToClock to (macro: num-type _time, [
  			(set: _day to (floor: _time / 100) + 1)
             (set: _dayTime to _time - ((_day - 1) * 100))
             (set: _totalMinutes to (floor: _dayTime * 14.4))
@@ -510,12 +520,12 @@ You check your schedule.
     ($computeRandoms: &quot;Living Room&quot;)
     ]
 
-</tw-passagedata><tw-passagedata pid="10" name="Equipment Discount" tags="" position="900,550" size="100,100">
+</tw-passagedata><tw-passagedata pid="10" name="Equipment Discount" tags="" position="825,500" size="100,100">
 &lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/continue-making-rooms/imagens/Events/Event_Discount_Movie.png&quot;&gt;
 
 You suddenly remember that there was a huge discount for safety equipment used by people with Alzheimer&#39;s, but this discount ends today. If you leave now, you could get the equipment and install it, improving both your and Afonzo&#39;s lives. But it costs serious money to get it...
 
-(link: &quot;&gt; Get the equipment: -200€ &amp; &quot; + ($convertToTime: ($convertMinutesToTime: 180)) [
+(link: &quot;&gt; Get the equipment: -200€ &amp; &quot; + ($convertToTime: ($convertMinutesToTime: 180))) [
 	(set: $afonzoWellbeing to $afonzoWellbeing + 1)
     (set: $fernandoWellbeing to $fernandoWellbeing + 1)
     (set: $time to $time + ($convertMinutesToTime: 180))
@@ -526,7 +536,7 @@ You suddenly remember that there was a huge discount for safety equipment used b
 
 (link: &quot;&gt; Wait for another opportunity&quot;) [
 	(go-to: $targetPassage)
-]</tw-passagedata><tw-passagedata pid="11" name="Go Outside Now" tags="" position="900,575" size="100,100">
+]</tw-passagedata><tw-passagedata pid="11" name="Go Outside Now" tags="" position="775,675" size="100,100">
 &lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/continue-making-rooms/imagens/Events/Event_Afonzo_quer_sair_Afonzo_Rage_Groceries.png&quot;&gt;
 
 You&#39;re tired and don&#39;t really feel like moving, but your father insists that you go for a walk right now: he&#39;s tired of sitting around at home and wants to check out the neighbourhood. You could go with him, but then you&#39;d be even more tired than you are now, and if you don&#39;t go, he will be seriously disappointed...
@@ -709,7 +719,7 @@ This is the bathroom. Here you can take a shower if you&#39;re feeling dirty.
     (display: &quot;UpdateTime&quot;)
 ]}
 
-&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/continue-making-rooms/imagens/Default%20Screens/Default_Office.png&quot;&gt;
+(if: $currentTask is 1) [&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/continue-making-rooms/imagens/Default%20Screens/Default_Office.png&quot;&gt;] (else:) [&lt;img src=&quot;https://raw.githubusercontent.com/Ricardo-Alexandre-Antunes/JS-Dementia/refs/heads/dev/imagens/Default%20Screens/random.png&quot;&gt;]
 
 You&#39;re in your father&#39;s office.
 
@@ -885,6 +895,10 @@ How are you doing?
 
 &lt;!-- Punishment: the least well Fernando is, the later he wakes up --&gt;
 (link: &quot;&gt; A new day approaches.&quot;) [
+	(if: (100 - $timeWentToBed) % 100 &gt; 10 and (100 - $timeWentToBed) % 100 &lt; 15) [(set: $fernandoWellbeing to it + 1)] (else:) [(set: $fernandoWellbeing to it - 2)]
+    (if: $daysSinceLastShower is 1) [(set: $fernandoWellbeing to it - 1)] (else-if: $daysSinceLastShower &gt; 1) [(set: $fernandoWellbeing to it - 3)]
+    (if: $entretainedToday is false) [(set: $fernandoWellbeing to it -1)]
+	(set: $currentTask to 1)
 	(set: $time to (floor: $time + ($convertMinutesToTime: 540 + (10 - $fernandoWellbeing) * 15)))
     (set: $tasksCompletedOnTimeDay to 0)
     (set: $tasksCompletedAlmostOnTimeDay to 0)
@@ -1132,12 +1146,18 @@ Total accomplishments:
 
 How are you doing?
 
-* Your sleep quality was (if: (100 - $timeWentToBed) % 100 &gt; 10) [good] (else:) [not great]
+* Your sleep quality was (if: (100 - $timeWentToBed) % 100 &gt; 10 and (100 - $timeWentToBed) % 100 &lt; 15) [good] (else:) [not great]
 * Your hygiene has been (if: $daysSinceLastShower is 0) [great] (else-if: $daysSinceLastShower &lt; 2) [ok...] (else:) [... smelly.]
 * You have (if: $entretainedToday is false) [not] entretained yourself.
+* Your financial status is (if: $money &gt; 200) [excellent] (else-if: $money &gt; 0) [acceptable] (else:) [deplorable...]
 
 &lt;!-- Punishment: the least well Fernando is, the later he wakes up --&gt;
 (link: &quot;&gt; A new day approaches.&quot;) [
+	(if: (100 - $timeWentToBed) % 100 &gt; 10 and (100 - $timeWentToBed) % 100 &lt; 15) [(set: $fernandoWellbeing to it + 1)] (else:) [(set: $fernandoWellbeing to it - 2)]
+    (if: $daysSinceLastShower is 1) [(set: $fernandoWellbeing to it - 1)] (else-if: $daysSinceLastShower &gt; 1) [(set: $fernandoWellbeing to it - 3)]
+    (if: $entretainedToday is false) [(set: $fernandoWellbeing to it -1)]
+	(set: $currentTask to 1)
+	(set: $day to it + 1)
 	(set: $time to (floor: $time + ($convertMinutesToTime: 540 + (10 - $fernandoWellbeing) * 15)))
     (set: $tasksCompletedOnTimeDay to 0)
     (set: $tasksCompletedAlmostOnTimeDay to 0)
@@ -1160,9 +1180,9 @@ You let it slide... his mind is confused, and there is no point in correcting hi
 
 He looks at you. Then he looks around. He seems very confused. His view of the world seemed to shatter right there. His eye drops a tear, and as you leave, you start crying also. Why did you correct him? It served no good purpose...
 
-[[&gt; He was already confused... and I made it worse...-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="41" name="Equipment Discount 2" tags="" position="825,550" size="100,100">You drive to the store and buy the equipment with the discount. A big chunk of money is gone, but it was worth it. The house feels much safer and your father can walk around more easily. It&#39;s a win for everyone!
+[[&gt; He was already confused... and I made it worse...-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="41" name="Equipment Discount 2" tags="" position="825,525" size="100,100">You drive to the store and buy the equipment with the discount. A big chunk of money is gone, but it was worth it. The house feels much safer and your father can walk around more easily. It&#39;s a win for everyone!
 
-[[&gt; Look at my father... so happy!-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="42" name="Go Outside Now 2" tags="" position="825,700" size="100,100">You go for the walk, and altough you have to walk very slowly, and many times had to stop, it was nice. A nice breath of fresh air. However, ironically, it made you more exhausted, and you had to rest for a while...
+[[&gt; Look at my father... so happy!-&gt;Living Room]]</tw-passagedata><tw-passagedata pid="42" name="Go Outside Now 2" tags="" position="775,700" size="100,100">You go for the walk, and altough you have to walk very slowly, and many times had to stop, it was nice. A nice breath of fresh air. However, ironically, it made you more exhausted, and you had to rest for a while...
 
 [[&gt; It was worth it though...-&gt;Living Room]] </tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
