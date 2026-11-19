@@ -1156,6 +1156,7 @@ How are you doing?
 	(if: (100 - $timeWentToBed) % 100 &gt; 10 and (100 - $timeWentToBed) % 100 &lt; 15) [(set: $fernandoWellbeing to it + 1)] (else:) [(set: $fernandoWellbeing to it - 2)]
     (if: $daysSinceLastShower is 1) [(set: $fernandoWellbeing to it - 1)] (else-if: $daysSinceLastShower &gt; 1) [(set: $fernandoWellbeing to it - 3)]
     (if: $entretainedToday is false) [(set: $fernandoWellbeing to it -1)]
+    (if: $money &lt; 200 and $money &gt; 0) [(set: $fernandoWellbeing to it - 1)] (else-if: $money &lt;= 0) [(set: $fernandoWellbeing to it - 3)]
 	(set: $currentTask to 1)
 	(set: $day to it + 1)
 	(set: $time to (floor: $time + ($convertMinutesToTime: 540 + (10 - $fernandoWellbeing) * 15)))
