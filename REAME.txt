@@ -1,0 +1,5 @@
+Ricardo Antunes - 115243
+Miguel Tavares - 110142
+João Neto - 113482
+
+As imagens presentes na pasta são meramente para consulta. As referências para imagens levam a um repositório de GitHub (o que contém este mesmo projeto)
